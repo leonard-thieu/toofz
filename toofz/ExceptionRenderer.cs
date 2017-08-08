@@ -1,9 +1,8 @@
 ﻿using System;
 using System.CodeDom.Compiler;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using log4net;
 using log4net.ObjectRenderer;
 
 namespace toofz
@@ -13,6 +12,42 @@ namespace toofz
     /// </summary>
     public sealed class ExceptionRenderer : IObjectRenderer
     {
+        static readonly ILog Log = LogManager.GetLogger(typeof(ExceptionRenderer));
+
+        internal static void RenderStackTrace(string stackTrace, IndentedTextWriter indentedWriter)
+        {
+            var stackFrames = stackTrace.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+            if (stackFrames.Length == 0)
+                return;
+
+            indentedWriter.WriteLineStart("StackTrace:");
+            indentedWriter.Indent++;
+
+            foreach (var stackFrame in stackFrames)
+            {
+                if (stackFrame.StartsWith("   at "))
+                {
+                    // Stack frames from System.Runtime.CompilerServices are generally internals for handling async methods. 
+                    // They produce a lot of noise in logs so we filter them out when rendering stack traces.
+                    if (!stackFrame.StartsWith("   at System.Runtime.CompilerServices"))
+                    {
+                        indentedWriter.WriteLineStart(stackFrame);
+                    }
+                }
+                else if (stackFrame.StartsWith("---"))
+                {
+                    continue;
+                }
+                else
+                {
+                    Log.Warn($"Unexpected line while rendering stack trace: '{stackFrame}'.");
+                }
+            }
+
+            indentedWriter.Indent--;
+        }
+
         /// <summary>
         /// Renders an object of type <see cref="Exception"/> similar to how the Visual Studio Exception Assistant 
         /// renders it.
@@ -60,7 +95,7 @@ namespace toofz
                 }
             }
 
-            WriteStackTrace(indentedWriter, new StackTrace(ex));
+            RenderStackTrace(ex.StackTrace, indentedWriter);
 
             var innerException = ex.InnerException;
             if (innerException != null)
@@ -70,41 +105,6 @@ namespace toofz
                 indentedWriter.Indent++;
                 RenderObject(rendererMap, innerException, indentedWriter);
             }
-        }
-
-        void WriteStackTrace(IndentedTextWriter indentedWriter, StackTrace stackTrace)
-        {
-            if (stackTrace.FrameCount == 0)
-                return;
-
-            indentedWriter.WriteLineStart("StackTrace:");
-            indentedWriter.Indent++;
-
-            foreach (StackFrame frame in stackTrace.GetFrames())
-            {
-                MethodBase method = frame.GetMethod();
-                Type type = method.DeclaringType;
-
-                if (type.Namespace != "System.Runtime.CompilerServices")
-                {
-                    var methodSig = GetMethodSignature(method);
-
-                    var value = type.Namespace != null ?
-                        string.Join(".", type.Namespace, type.Name, methodSig) :
-                        string.Join(".", type.Name, methodSig);
-                    indentedWriter.WriteLineStart(value);
-                }
-            }
-
-            indentedWriter.Indent--;
-        }
-
-        static string GetMethodSignature(MethodBase method)
-        {
-            var fullSig = method.ToString();
-            var i = fullSig.IndexOf(' ');
-
-            return fullSig.Substring(i + 1);
         }
     }
 }
