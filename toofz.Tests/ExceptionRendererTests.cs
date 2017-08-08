@@ -10,6 +10,7 @@ namespace toofz.Tests
         public class RenderStackTrace
         {
             [TestMethod]
+            [Ignore("Paths will not match on different machines.")]
             public void StackTraceFromThrownException_RendersStackTraceCorrectly()
             {
                 // Arrange
