@@ -30,7 +30,6 @@ namespace toofz.Tests
             }
 
             [TestMethod]
-            [Ignore("Paths will not match on different machines.")]
             public void StackTraceFromThrownException_RendersStackTraceCorrectly()
             {
                 // Arrange
@@ -39,20 +38,19 @@ namespace toofz.Tests
                 using (var indentedTextWriter = new IndentedTextWriter(sw))
                 {
                     // Act
-                    ExceptionRenderer.RenderStackTrace(ex.StackTrace, indentedTextWriter);
+                    ExceptionRenderer.RenderStackTrace(ex.StackTrace, indentedTextWriter, true);
                     var output = sw.ToString();
 
                     // Assert
                     var expected = @"
 StackTrace:
-       at toofz.Tests.ExceptionHelper.ThrowException() in S:\Projects\toofz\toofz.Tests\ExceptionHelper.cs:line 10
-       at toofz.TestsShared.Record.Exception(Action testCode) in C:\projects\toofz-testsshared\toofz.TestsShared\Record.cs:line 33";
+    toofz.Tests.ExceptionHelper.ThrowException()
+    toofz.TestsShared.Record.Exception(Action testCode)";
                     Assert.AreEqual(expected, output);
                 }
             }
 
             [TestMethod]
-            [Ignore("Not sure why this one fails on AppVeyor.")]
             public void StackTraceFromUnthrownException_RendersStackTraceCorrectly()
             {
                 // Arrange
@@ -63,14 +61,14 @@ StackTrace:
                 using (var indentedTextWriter = new IndentedTextWriter(sw))
                 {
                     // Act
-                    ExceptionRenderer.RenderStackTrace(ex.StackTrace, indentedTextWriter);
+                    ExceptionRenderer.RenderStackTrace(ex.StackTrace, indentedTextWriter, true);
                     var output = sw.ToString();
 
                     // Assert
                     var expected = @"
 StackTrace:
-       at toofz.Tests.ExceptionHelper.ThrowException() in S:\Projects\toofz\toofz.Tests\ExceptionHelper.cs:line 10
-       at toofz.TestsShared.Record.Exception(Action testCode) in C:\projects\toofz-testsshared\toofz.TestsShared\Record.cs:line 33";
+    toofz.Tests.ExceptionHelper.ThrowException()
+    toofz.TestsShared.Record.Exception(Action testCode)";
                     Assert.AreEqual(expected, output);
                 }
             }
