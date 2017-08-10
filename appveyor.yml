@@ -1,4 +1,4 @@
-version: 2.2.{build}
+version: 2.3.{build}
 image: Visual Studio 2017
 
 configuration:
@@ -11,6 +11,9 @@ notifications:
       secure: c7l1UmXHWpIDLL1awU4r0QYVPToYM/XjV8trFyD1oHArKxs/vBTYiKYScr1EhCUgmEX6sAFBTvkUHF/k5B+cGjzqRBR2XkAO+lzk8cHQ1FI=
 nuget:
   disable_publish_on_pr: true
+
+init:
+  - git config --global core.autocrlf false
 
 before_build:
   - appveyor-retry nuget restore -DisableParallelProcessing

@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>toofz</id>
-        <version>2.2.0</version>
+        <version>2.3.0</version>
         <title>toofz</title>
         <authors>Leonard Thieu</authors>
         <owners>Leonard Thieu</owners>
@@ -10,7 +10,6 @@
         <projectUrl>https://github.com/leonard-thieu/toofz</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Utility library.</description>
-        <releaseNotes>Migrated utility types from toofz-necrodancer.</releaseNotes>
         <copyright>Copyright 2017</copyright>
         <tags>toofz utility</tags>
     </metadata>

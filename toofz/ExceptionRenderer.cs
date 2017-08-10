@@ -14,8 +14,13 @@ namespace toofz
     {
         static readonly ILog Log = LogManager.GetLogger(typeof(ExceptionRenderer));
 
-        internal static void RenderStackTrace(string stackTrace, IndentedTextWriter indentedWriter)
+        internal static void RenderStackTrace(
+            string stackTrace,
+            IndentedTextWriter indentedWriter,
+            bool suppressFileInfo = false)
         {
+            stackTrace = stackTrace ?? "";
+
             var stackFrames = stackTrace.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
 
             if (stackFrames.Length == 0)
@@ -28,11 +33,20 @@ namespace toofz
             {
                 if (stackFrame.StartsWith("   at "))
                 {
+                    var _stackFrame = stackFrame.Remove(0, 6);
                     // Stack frames from System.Runtime.CompilerServices are generally internals for handling async methods. 
                     // They produce a lot of noise in logs so we filter them out when rendering stack traces.
-                    if (!stackFrame.StartsWith("   at System.Runtime.CompilerServices"))
+                    if (!_stackFrame.StartsWith("System.Runtime.CompilerServices"))
                     {
-                        indentedWriter.WriteLineStart(stackFrame);
+                        if (suppressFileInfo)
+                        {
+                            var inIndex = _stackFrame.IndexOf(" in ");
+                            if (inIndex > -1)
+                            {
+                                _stackFrame = _stackFrame.Substring(0, inIndex);
+                            }
+                        }
+                        indentedWriter.WriteLineStart(_stackFrame);
                     }
                 }
                 else if (stackFrame.StartsWith("---"))
