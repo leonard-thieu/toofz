@@ -12,6 +12,9 @@ notifications:
 nuget:
   disable_publish_on_pr: true
 
+init:
+  - git config --global core.autocrlf false
+
 before_build:
   - appveyor-retry nuget restore -DisableParallelProcessing
 build:
