@@ -46,7 +46,7 @@ namespace toofz.Tests
 StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
     toofz.TestsShared.Record.Exception(Action testCode)";
-                    Assert.AreEqual(expected, output);
+                    AssertHelper.NormalizedAreEqual(expected, output);
                 }
             }
 
@@ -69,7 +69,7 @@ StackTrace:
 StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
     toofz.TestsShared.Record.Exception(Action testCode)";
-                    Assert.AreEqual(expected, output);
+                    AssertHelper.NormalizedAreEqual(expected, output);
                 }
             }
         }
