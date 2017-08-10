@@ -16,6 +16,8 @@ namespace toofz
 
         internal static void RenderStackTrace(string stackTrace, IndentedTextWriter indentedWriter)
         {
+            stackTrace = stackTrace ?? "";
+
             var stackFrames = stackTrace.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
 
             if (stackFrames.Length == 0)

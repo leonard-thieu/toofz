@@ -1,6 +1,7 @@
 ﻿using System.CodeDom.Compiler;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using toofz.TestsShared;
 
 namespace toofz.Tests
 {
@@ -9,6 +10,25 @@ namespace toofz.Tests
         [TestClass]
         public class RenderStackTrace
         {
+            [TestMethod]
+            public void StackTraceIsNull_DoesNotThrowNullReferenceException()
+            {
+                // Arrange
+                string stackTrace = null;
+                using (var sw = new StringWriter())
+                using (var indentedTextWriter = new IndentedTextWriter(sw))
+                {
+                    // Act
+                    var ex = Record.Exception(() =>
+                    {
+                        ExceptionRenderer.RenderStackTrace(stackTrace, indentedTextWriter);
+                    });
+
+                    // Assert
+                    Assert.IsNull(ex);
+                }
+            }
+
             [TestMethod]
             [Ignore("Paths will not match on different machines.")]
             public void StackTraceFromThrownException_RendersStackTraceCorrectly()
