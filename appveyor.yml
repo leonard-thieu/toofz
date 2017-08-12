@@ -4,7 +4,11 @@ image: Visual Studio 2017
 configuration:
   - Release
 environment:
-  PROJECT: toofz.NecroDancer.Leaderboards
+  PROJECT: toofz
+  COVERALLS_REPO_TOKEN:
+    secure: yOO1uv2WMuoBci3X+xcjGeYZ0vt5CS8QwLFr9o4On60cc5t6RG+tjaDMUy13OqPP
+  COVERALLS_SERVICE_NAME: appveyor
+  COVERALLS_SERVICE_JOB_ID: '%APPVEYOR_JOB_ID%'
 cache:
   - packages -> **\packages.config
 notifications:
@@ -20,6 +24,11 @@ before_build:
 build:
   project: toofz.sln
   verbosity: minimal
+
+test_script:
+  - ps: .\Test-Project.ps1 -Assembly $env:PROJECT
+after_test:
+  - ps: .\Submit-CodeCoverageResults.ps1
 
 deploy_script:
   - ps: .\Deploy-NuGetPackage.ps1
