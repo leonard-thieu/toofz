@@ -19,16 +19,19 @@ notifications:
 init:
   - git config --global core.autocrlf false
 
+install:
+  - git clone https://github.com/leonard-thieu/toofz-build.git Scripts
+
 before_build:
   - appveyor-retry nuget restore -DisableParallelProcessing
 build:
-  project: toofz.sln
+  project: $(PROJECT).sln
   verbosity: minimal
 
 test_script:
-  - ps: .\Test-Project.ps1 -Assembly $env:PROJECT
+  - ps: .\Scripts\Test-Project.ps1 -Assembly $env:PROJECT
 after_test:
-  - ps: .\Submit-CodeCoverageResults.ps1
+  - ps: .\Scripts\Submit-CodeCoverageResults.ps1
 
 deploy_script:
-  - ps: .\Deploy-NuGetPackage.ps1
+  - ps: .\Scripts\Deploy-NuGetPackage.ps1
