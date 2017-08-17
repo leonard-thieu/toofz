@@ -46,21 +46,12 @@
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="UpdateNotifier.cs" />
     <Compile Include="Util.cs" />
-    <Compile Include="Xml\XmlPreprocessingReader.cs" />
-    <Compile Include="Xml\XmlReaderExtensions.cs" />
-    <Compile Include="Xml\XmlReaderFactory.cs" />
-    <Compile Include="Xml\XmlSequenceMapping.cs" />
-    <Compile Include="Xml\XmlSequenceReader.cs" />
-    <Compile Include="Xml\XmlSequenceWriter.cs" />
-    <Compile Include="Xml\XmlSerializerExtensions.cs" />
-    <Compile Include="Xml\XmlWriterExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
