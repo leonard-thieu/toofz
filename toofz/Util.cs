@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 
 namespace toofz
 {
@@ -9,31 +7,6 @@ namespace toofz
     /// </summary>
     public static class Util
     {
-        public static bool TryGetAttributeProperty<TResult, TAttribute>(MemberInfo member, Func<TAttribute, TResult> property, out TResult result)
-            where TAttribute : Attribute
-        {
-            if (member == null)
-                throw new ArgumentNullException(nameof(member));
-            if (property == null)
-                throw new ArgumentNullException(nameof(property));
-
-            var attr =
-                member.GetCustomAttributes(typeof(TAttribute), true)
-                      .OfType<TAttribute>()
-                      .SingleOrDefault();
-
-            if (attr != null)
-            {
-                result = property(attr);
-                return true;
-            }
-            else
-            {
-                result = default(TResult);
-                return false;
-            }
-        }
-
         public static string GetEnvVar(string variable)
         {
             return Environment.GetEnvironmentVariable(variable, EnvironmentVariableTarget.Machine) ??
