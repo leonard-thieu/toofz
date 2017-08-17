@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Diagnostics;
 using log4net;
 
 namespace toofz
 {
     public abstract class NotifierBase : IDisposable
     {
-        protected NotifierBase(string category, ILog log, string name)
+        protected NotifierBase(string category, ILog log, string name, IStopwatch stopwatch = null)
         {
             Category = category ?? throw new ArgumentNullException(nameof(category), $"{nameof(category)} is null.");
             Log = log ?? throw new ArgumentNullException(nameof(log), $"{nameof(log)} is null.");
             Name = name ?? throw new ArgumentNullException(nameof(name), $"{nameof(name)} is null.");
+            Stopwatch = stopwatch ?? StopwatchAdapter.StartNew();
 
             Log.Debug($"Start {Category} {Name}");
         }
@@ -19,7 +19,7 @@ namespace toofz
         protected ILog Log { get; }
         protected string Name { get; }
 
-        public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
+        public IStopwatch Stopwatch { get; }
 
         #region IDisposable Members
 
