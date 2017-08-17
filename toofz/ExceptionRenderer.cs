@@ -91,12 +91,12 @@ namespace toofz
                 switch (name)
                 {
                     // Ignored properties
-                    case "Data":
-                    case "TargetSite":
+                    case nameof(Exception.Data):
+                    case nameof(Exception.TargetSite):
 
                     // Special case properties
-                    case "StackTrace":
-                    case "InnerException":
+                    case nameof(Exception.StackTrace):
+                    case nameof(Exception.InnerException):
                         break;
 
                     default:
@@ -115,7 +115,7 @@ namespace toofz
             if (innerException != null)
             {
                 type = innerException.GetType();
-                indentedWriter.WriteLineStart($"InnerException: {type}");
+                indentedWriter.WriteLineStart($"{nameof(Exception.InnerException)}: {type}");
                 indentedWriter.Indent++;
                 RenderObject(rendererMap, innerException, indentedWriter);
             }
