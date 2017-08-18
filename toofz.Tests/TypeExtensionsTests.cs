@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using toofz.TestsShared;
 
 namespace toofz.NecroDancer.Leaderboards.Tests
 {
@@ -29,12 +28,11 @@ namespace toofz.NecroDancer.Leaderboards.Tests
                 // Arrange
                 Type type = null;
 
-                // Act
-                var ex = Record.Exception(() => TypeExtensions.GetSimpleFullName(type));
-
-                // Assert
-                Assert.IsNotNull(ex);
-                Assert.IsInstanceOfType(ex, typeof(ArgumentNullException));
+                // Act -> Assert
+                Assert.ThrowsException<ArgumentNullException>(() =>
+                {
+                    TypeExtensions.GetSimpleFullName(type);
+                });
             }
         }
     }

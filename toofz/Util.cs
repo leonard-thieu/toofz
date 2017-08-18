@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace toofz
 {
@@ -7,11 +8,18 @@ namespace toofz
     /// </summary>
     public static class Util
     {
+        static IEnvironment environment = new EnvironmentAdapter();
+
+        [ExcludeFromCodeCoverage]
         public static string GetEnvVar(string variable)
         {
-            return Environment.GetEnvironmentVariable(variable, EnvironmentVariableTarget.Machine) ??
-                throw new ArgumentNullException(null,
-                    $"The environment variable '{variable}' must be set.");
+            return GetEnvVar(variable, environment);
+        }
+
+        internal static string GetEnvVar(string variable, IEnvironment environment)
+        {
+            return environment.GetEnvironmentVariable(variable, EnvironmentVariableTarget.Machine) ??
+                throw new ArgumentNullException(null, $"The environment variable '{variable}' must be set.");
         }
     }
 }

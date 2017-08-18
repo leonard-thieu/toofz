@@ -2,11 +2,10 @@
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using toofz.TestsShared;
 
 namespace toofz.Tests
 {
-    public class TextWriterExtensionsTests
+    class TextWriterExtensionsTests
     {
         [TestClass]
         public class WriteLineStart
@@ -31,12 +30,11 @@ namespace toofz.Tests
                 // Arrange
                 TextWriter writer = null;
 
-                // Act
-                var ex = Record.Exception(() => TextWriterExtensions.WriteLineStart(writer, null));
-
-                // Assert
-                Assert.IsNotNull(ex);
-                Assert.IsInstanceOfType(ex, typeof(ArgumentNullException));
+                // Act -> Assert
+                Assert.ThrowsException<ArgumentNullException>(() =>
+                {
+                    TextWriterExtensions.WriteLineStart(writer, null);
+                });
             }
         }
     }

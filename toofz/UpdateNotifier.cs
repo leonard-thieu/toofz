@@ -5,7 +5,11 @@ namespace toofz
 {
     public sealed class UpdateNotifier : NotifierBase
     {
-        public UpdateNotifier(ILog log, string name) : base("Update", log, name) { }
+        public UpdateNotifier(ILog log, string name, IStopwatch stopwatch = null) :
+            base("Update", log, name, stopwatch)
+        {
+
+        }
 
         #region IDisposable Members
 

@@ -17,7 +17,7 @@ namespace toofz
             return new StopwatchAdapter(Stopwatch.StartNew());
         }
 
-        StopwatchAdapter(Stopwatch stopwatch)
+        internal StopwatchAdapter(Stopwatch stopwatch)
         {
             this.stopwatch = stopwatch;
         }

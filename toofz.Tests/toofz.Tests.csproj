@@ -93,10 +93,16 @@
     <Compile Include="DownloadNotifierTests.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="ExceptionRendererTests.cs" />
+    <Compile Include="MockNotifierBase.cs" />
+    <Compile Include="NotifierBaseTests.cs" />
+    <Compile Include="StopwatchAdapterTests.cs" />
+    <Compile Include="StoreNotifierTests.cs" />
     <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="UnthrownException.cs" />
     <Compile Include="TextWriterExtensionsTests.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
+    <Compile Include="UpdateNotifierTests.cs" />
+    <Compile Include="UtilTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

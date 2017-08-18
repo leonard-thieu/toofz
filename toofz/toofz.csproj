@@ -51,7 +51,11 @@
     <Compile Include="ActionProgress.cs" />
     <Compile Include="CloudRoleNameTelemetryInitializer.cs" />
     <Compile Include="DownloadNotifier.cs" />
+    <Compile Include="EnvironmentAdapter.cs">
+      <DependentUpon>IEnvironment.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExceptionRenderer.cs" />
+    <Compile Include="IEnvironment.cs" />
     <Compile Include="IStopwatch.cs" />
     <Compile Include="NotifierBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

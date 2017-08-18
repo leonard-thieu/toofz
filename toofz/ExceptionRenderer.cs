@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using log4net;
@@ -13,6 +14,81 @@ namespace toofz
     public sealed class ExceptionRenderer : IObjectRenderer
     {
         static readonly ILog Log = LogManager.GetLogger(typeof(ExceptionRenderer));
+
+        /// <summary>
+        /// Renders an object of type <see cref="Exception"/> similar to how Visual Studio Exception Assistant 
+        /// renders it.
+        /// </summary>
+        /// <param name="rendererMap">Not used.</param>
+        /// <param name="obj">The exception.</param>
+        /// <param name="writer">The writer.</param>
+        [ExcludeFromCodeCoverage]
+        public void RenderObject(RendererMap rendererMap, object obj, TextWriter writer)
+        {
+            RenderObject(rendererMap, obj, writer, false);
+        }
+
+        /// <summary>
+        /// Renders an object of type <see cref="Exception"/> similar to how Visual Studio Exception Assistant 
+        /// renders it.
+        /// </summary>
+        /// <param name="rendererMap">Not used.</param>
+        /// <param name="obj">The exception.</param>
+        /// <param name="writer">The writer.</param>
+        /// <param name="suppressFileInfo">
+        /// Suppresses file information in stack traces. This is used for repeatable tests.
+        /// </param>
+        internal void RenderObject(RendererMap rendererMap, object obj, TextWriter writer, bool suppressFileInfo)
+        {
+            var ex = (Exception)obj;
+            var type = ex.GetType();
+
+            var indentedWriter = writer as IndentedTextWriter;
+            if (indentedWriter == null)
+            {
+                indentedWriter = new IndentedTextWriter(writer, "  ");
+
+                indentedWriter.Write($"{type} was unhandled");
+                indentedWriter.Indent++;
+            }
+
+            var properties = type.GetProperties().OrderBy(x => x.Name);
+            foreach (var property in properties)
+            {
+                var name = property.Name;
+
+                switch (name)
+                {
+                    // Ignored properties
+                    case nameof(Exception.Data):
+                    case nameof(Exception.TargetSite):
+
+                    // Special case properties
+                    case nameof(Exception.StackTrace):
+                    case nameof(Exception.InnerException):
+                        break;
+
+                    default:
+                        var value = property.GetValue(ex)?.ToString();
+                        if (value != null)
+                        {
+                            indentedWriter.WriteLineStart($"{name}={value}");
+                        }
+                        break;
+                }
+            }
+
+            RenderStackTrace(ex.StackTrace, indentedWriter, suppressFileInfo);
+
+            var innerException = ex.InnerException;
+            if (innerException != null)
+            {
+                type = innerException.GetType();
+                indentedWriter.WriteLineStart($"{nameof(Exception.InnerException)}: {type}");
+                indentedWriter.Indent++;
+                RenderObject(rendererMap, innerException, indentedWriter, suppressFileInfo);
+            }
+        }
 
         internal static void RenderStackTrace(
             string stackTrace,
@@ -60,65 +136,6 @@ namespace toofz
             }
 
             indentedWriter.Indent--;
-        }
-
-        /// <summary>
-        /// Renders an object of type <see cref="Exception"/> similar to how the Visual Studio Exception Assistant 
-        /// renders it.
-        /// </summary>
-        /// <param name="rendererMap">Not used.</param>
-        /// <param name="obj">The exception.</param>
-        /// <param name="writer">The writer.</param>
-        public void RenderObject(RendererMap rendererMap, object obj, TextWriter writer)
-        {
-            var ex = (Exception)obj;
-            var type = ex.GetType();
-
-            var indentedWriter = writer as IndentedTextWriter;
-            if (indentedWriter == null)
-            {
-                indentedWriter = new IndentedTextWriter(writer, "  ");
-
-                indentedWriter.Write($"{type} was unhandled");
-                indentedWriter.Indent++;
-            }
-
-            var properties = type.GetProperties().OrderBy(x => x.Name);
-            foreach (var property in properties)
-            {
-                var name = property.Name;
-
-                switch (name)
-                {
-                    // Ignored properties
-                    case nameof(Exception.Data):
-                    case nameof(Exception.TargetSite):
-
-                    // Special case properties
-                    case nameof(Exception.StackTrace):
-                    case nameof(Exception.InnerException):
-                        break;
-
-                    default:
-                        var value = property.GetValue(ex)?.ToString();
-                        if (value != null)
-                        {
-                            indentedWriter.WriteLineStart($"{name}={value}");
-                        }
-                        break;
-                }
-            }
-
-            RenderStackTrace(ex.StackTrace, indentedWriter);
-
-            var innerException = ex.InnerException;
-            if (innerException != null)
-            {
-                type = innerException.GetType();
-                indentedWriter.WriteLineStart($"{nameof(Exception.InnerException)}: {type}");
-                indentedWriter.Indent++;
-                RenderObject(rendererMap, innerException, indentedWriter);
-            }
         }
     }
 }

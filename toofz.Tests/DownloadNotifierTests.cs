@@ -1,5 +1,4 @@
-﻿using System;
-using Humanizer;
+﻿using Humanizer;
 using log4net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -28,27 +27,37 @@ namespace toofz.Tests
         }
 
         [TestClass]
+        public class TotalBytes
+        {
+            [TestMethod]
+            public void ReturnsTotalBytes()
+            {
+                // Arrange
+                var mockLog = new Mock<ILog>();
+                var name = "leaderboards";
+                var notifier = new DownloadNotifier(mockLog.Object, name);
+                notifier.Progress.Report(21);
+                notifier.Progress.Report(21);
+
+                // Act
+                var totalBytes = notifier.TotalBytes;
+
+                // Assert
+                Assert.AreEqual(42, totalBytes);
+            }
+        }
+
+        [TestClass]
         public class Dispose
         {
-            Mock<ILog> mockLog;
-            Mock<IStopwatch> mockStopwatch;
-            DownloadNotifier notifier;
-            IProgress<long> progress;
-
-            [TestInitialize]
-            public void Initialize()
-            {
-                mockLog = new Mock<ILog>();
-                mockStopwatch = new Mock<IStopwatch>();
-                notifier = new DownloadNotifier(mockLog.Object, "leaderboards", mockStopwatch.Object);
-                progress = notifier.Progress;
-            }
-
             [TestMethod]
             public void LogsSizeTimeAndRate()
             {
                 // Arrange
-                progress.Report((long)(26.3).Megabytes().Bytes);
+                var mockLog = new Mock<ILog>();
+                var mockStopwatch = new Mock<IStopwatch>();
+                var notifier = new DownloadNotifier(mockLog.Object, "leaderboards", mockStopwatch.Object);
+                notifier.Progress.Report((long)(26.3).Megabytes().Bytes);
                 mockStopwatch
                     .SetupGet(stopwatch => stopwatch.Elapsed)
                     .Returns((10.34).Seconds());
@@ -58,6 +67,26 @@ namespace toofz.Tests
 
                 // Assert
                 mockLog.Verify(log => log.Info("Download leaderboards complete -- 26.3 MB over 10.3 seconds (2.5 MBps)."));
+            }
+
+            [TestMethod]
+            public void DisposingMoreThanOnce_LogsSizeTimeAndRateOnlyOnce()
+            {
+                // Arrange
+                var mockLog = new Mock<ILog>();
+                var mockStopwatch = new Mock<IStopwatch>();
+                var notifier = new DownloadNotifier(mockLog.Object, "leaderboards", mockStopwatch.Object);
+                notifier.Progress.Report((long)(26.3).Megabytes().Bytes);
+                mockStopwatch
+                    .SetupGet(stopwatch => stopwatch.Elapsed)
+                    .Returns((10.34).Seconds());
+
+                // Act
+                notifier.Dispose();
+                notifier.Dispose();
+
+                // Assert
+                mockLog.Verify(log => log.Info("Download leaderboards complete -- 26.3 MB over 10.3 seconds (2.5 MBps)."), Times.Once);
             }
         }
     }

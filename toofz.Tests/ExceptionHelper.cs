@@ -1,5 +1,5 @@
 ﻿using System;
-using toofz.TestsShared;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace toofz.Tests
 {
@@ -12,8 +12,7 @@ namespace toofz.Tests
 
         public static Exception GetThrownException()
         {
-            return Record.Exception(ThrowException);
+            return Assert.ThrowsException<Exception>((Action)ThrowException);
         }
-
     }
 }

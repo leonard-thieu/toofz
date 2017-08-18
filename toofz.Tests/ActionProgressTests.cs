@@ -1,7 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using toofz.TestsShared;
 
 namespace toofz.Tests
 {
@@ -16,14 +14,11 @@ namespace toofz.Tests
                 // Arrange
                 Action<long> handler = null;
 
-                // Act
-                var ex = Record.Exception(() =>
+                // Act -> Assert
+                Assert.ThrowsException<ArgumentNullException>(() =>
                 {
                     new ActionProgress<long>(handler);
                 });
-
-                // Assert
-                Assert.IsInstanceOfType(ex, typeof(ArgumentNullException));
             }
 
             [TestMethod]

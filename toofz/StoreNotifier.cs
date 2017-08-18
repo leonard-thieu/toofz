@@ -5,7 +5,8 @@ namespace toofz
 {
     public sealed class StoreNotifier : NotifierBase
     {
-        public StoreNotifier(ILog log, string name) : base("Store", log, name)
+        public StoreNotifier(ILog log, string name, IStopwatch stopwatch = null) :
+            base("Store", log, name, stopwatch)
         {
             Progress = new ActionProgress<long>(r => rowsAffected = r);
         }

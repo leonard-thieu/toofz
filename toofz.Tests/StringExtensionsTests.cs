@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using toofz.TestsShared;
 
 namespace toofz.Tests
 {
@@ -16,14 +15,11 @@ namespace toofz.Tests
                 // Arrange
                 string value = null;
 
-                // Act
-                var ex = Record.Exception(() =>
+                // Act -> Assert
+                Assert.ThrowsException<ArgumentNullException>(() =>
                 {
                     value.ToStream();
                 });
-
-                // Assert
-                Assert.IsInstanceOfType(ex, typeof(ArgumentNullException));
             }
 
             [TestMethod]

@@ -8,6 +8,34 @@ namespace toofz.Tests
     class ExceptionRendererTests
     {
         [TestClass]
+        public class RenderObject
+        {
+            [TestMethod]
+            public void RendersException()
+            {
+                // Arrange
+                var ex = ExceptionHelper.GetThrownException();
+                var renderer = new ExceptionRenderer();
+                using (var sr = new StringWriter())
+                {
+                    // Act
+                    renderer.RenderObject(null, ex, sr, true);
+                    var output = sr.ToString();
+
+                    // Assert
+                    var expected = @"System.Exception was unhandled
+  HResult=-2146233088
+  Message=Thrown test exception
+  Source=toofz.Tests
+  StackTrace:
+    toofz.Tests.ExceptionHelper.ThrowException()
+    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.ThrowsException[T](Action action, String message, Object[] parameters)";
+                    AssertHelper.NormalizedAreEqual(expected, output);
+                }
+            }
+        }
+
+        [TestClass]
         public class RenderStackTrace
         {
             [TestMethod]
@@ -18,14 +46,8 @@ namespace toofz.Tests
                 using (var sw = new StringWriter())
                 using (var indentedTextWriter = new IndentedTextWriter(sw))
                 {
-                    // Act
-                    var ex = Record.Exception(() =>
-                    {
-                        ExceptionRenderer.RenderStackTrace(stackTrace, indentedTextWriter);
-                    });
-
-                    // Assert
-                    Assert.IsNull(ex);
+                    // Act -> Assert
+                    ExceptionRenderer.RenderStackTrace(stackTrace, indentedTextWriter);
                 }
             }
 
@@ -45,7 +67,7 @@ namespace toofz.Tests
                     var expected = @"
 StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
-    toofz.TestsShared.Record.Exception(Action testCode)";
+    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.ThrowsException[T](Action action, String message, Object[] parameters)";
                     AssertHelper.NormalizedAreEqual(expected, output);
                 }
             }
