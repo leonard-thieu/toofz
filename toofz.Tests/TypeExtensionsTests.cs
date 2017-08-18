@@ -11,7 +11,7 @@ namespace toofz.NecroDancer.Leaderboards.Tests
         public class GetSimpleFullName
         {
             [TestMethod]
-            public void ValidParams_ReturnsSimpleFullName()
+            public void ReturnsSimpleFullName()
             {
                 // Arrange
                 var type = typeof(List<object>);

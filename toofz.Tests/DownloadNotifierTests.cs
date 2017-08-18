@@ -9,6 +9,25 @@ namespace toofz.Tests
     class DownloadNotifierTests
     {
         [TestClass]
+        public class Constructor
+        {
+            [TestMethod]
+            public void ReturnsInstance()
+            {
+                // Arrange
+                var mockLog = new Mock<ILog>();
+                var name = "leaderboards";
+
+                // Act
+                var notifier = new DownloadNotifier(mockLog.Object, name);
+
+                // Assert
+                Assert.IsInstanceOfType(notifier, typeof(DownloadNotifier));
+                Assert.IsNotNull(notifier.Progress);
+            }
+        }
+
+        [TestClass]
         public class Dispose
         {
             Mock<ILog> mockLog;
@@ -26,7 +45,7 @@ namespace toofz.Tests
             }
 
             [TestMethod]
-            public void Dispose_LogsSizeTimeAndRate()
+            public void LogsSizeTimeAndRate()
             {
                 // Arrange
                 progress.Report((long)(26.3).Megabytes().Bytes);

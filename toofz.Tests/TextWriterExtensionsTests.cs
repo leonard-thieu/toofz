@@ -12,7 +12,7 @@ namespace toofz.Tests
         public class WriteLineStart
         {
             [TestMethod]
-            public void ValidParams_WritesLineThenValue()
+            public void WritesLineThenValue()
             {
                 // Arrange
                 var mockWriter = new Mock<TextWriter>();

@@ -88,10 +88,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionProgressTests.cs" />
     <Compile Include="CloudRoleNameTelemetryInitializerTests.cs" />
     <Compile Include="DownloadNotifierTests.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="ExceptionRendererTests.cs" />
+    <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="UnthrownException.cs" />
     <Compile Include="TextWriterExtensionsTests.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
