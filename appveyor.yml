@@ -28,7 +28,7 @@ build:
   verbosity: minimal
 
 test_script:
-  - ps: .\Scripts\Test-Project.ps1
+  - ps: .\Scripts\Test-Project.ps1 -Verbose
 after_test:
   - codecov --file results.xml
 
