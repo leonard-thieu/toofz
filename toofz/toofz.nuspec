@@ -2,8 +2,8 @@
 <package>
   <metadata>
     <id>toofz</id>
-    <version>4.0.0</version>
-    <title>toofz</title>
+    <version>4.1.0</version>
+    <title>toofz Utilities</title>
     <authors>Leonard Thieu</authors>
     <owners>Leonard Thieu</owners>
     <licenseUrl>https://github.com/leonard-thieu/toofz/blob/ce3bb807fa07d3fe0832d9a76a917f559480e416/LICENSE</licenseUrl>
