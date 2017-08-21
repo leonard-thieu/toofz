@@ -80,14 +80,25 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Resources\Categories.json" />
+    <None Include="Resources\Category.json" />
+    <None Include="Resources\CategoryItem.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionProgressTests.cs" />
+    <Compile Include="CategoriesTests.cs" />
+    <Compile Include="CategoryItemTests.cs" />
+    <Compile Include="CategoryTests.cs" />
     <Compile Include="DownloadNotifierTests.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="ExceptionRendererTests.cs" />
     <Compile Include="MockNotifierBase.cs" />
     <Compile Include="NotifierBaseTests.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="StopwatchAdapterTests.cs" />
     <Compile Include="StoreNotifierTests.cs" />
     <Compile Include="StringExtensionsTests.cs" />
@@ -97,14 +108,18 @@
     <Compile Include="UpdateNotifierTests.cs" />
     <Compile Include="UtilTests.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\toofz\toofz.csproj">
       <Project>{2e55fdb2-96bb-4c8a-b220-299be8484593}</Project>
       <Name>toofz</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
