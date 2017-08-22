@@ -14,7 +14,7 @@ namespace toofz
     {
         const int SaltSize = 8;
         // This is writable so tests can execute faster. It should otherwise not be modified during run-time.
-        internal static int Iterations = 200000;
+        public static int Iterations { get; set; } = 200000;
 
         // Using the host's physical address is a compromise between security and ease of use.
         // One of the goals of the toofz projects is for the code to be easy to evaluate and understand.
