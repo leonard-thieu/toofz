@@ -13,7 +13,9 @@ namespace toofz
     public static class Secrets
     {
         const int SaltSize = 8;
-        public static int Iterations { get; set; } = 20000;
+        // https://msdn.microsoft.com/en-us/library/system.security.cryptography.rfc2898derivebytes.iterationcount(v=vs.110).aspx#Remarks
+        // Defaults to 1000 (minimum recommended of iterations). Consumers should increase this based on their requirements.
+        public static int Iterations { get; set; } = 1000;
 
         // Using the host's physical address is a compromise between security and ease of use.
         // One of the goals of the toofz projects is for the code to be easy to evaluate and understand.

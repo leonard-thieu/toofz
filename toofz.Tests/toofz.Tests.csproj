@@ -108,7 +108,6 @@
     <Compile Include="StopwatchAdapterTests.cs" />
     <Compile Include="StoreNotifierTests.cs" />
     <Compile Include="StringExtensionsTests.cs" />
-    <Compile Include="TestsSetup.cs" />
     <Compile Include="UnthrownException.cs" />
     <Compile Include="TextWriterExtensionsTests.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
