@@ -2,7 +2,6 @@
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using toofz.Tests.Properties;
 using toofz.TestsShared;
@@ -57,19 +56,19 @@ namespace toofz.Tests
         }
 
         [TestClass]
-        public class GetSettingsStream
+        public class GetSettingsReader
         {
             [TestMethod]
             public void SetToNull_ThrowsArgumentNullException()
             {
                 // Arrange
                 var provider = new ServiceSettingsProvider();
-                Func<Stream> getSettingsStream = null;
+                Func<TextReader> getSettingsReader = null;
 
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentNullException>(() =>
                 {
-                    provider.GetSettingsStream = getSettingsStream;
+                    provider.GetSettingsReader = getSettingsReader;
                 });
             }
 
@@ -80,10 +79,10 @@ namespace toofz.Tests
                 var provider = new ServiceSettingsProvider();
 
                 // Act
-                var getSettingsStream = provider.GetSettingsStream;
+                var getSettingsReader = provider.GetSettingsReader;
 
                 // Assert
-                Assert.IsNotNull(getSettingsStream);
+                Assert.IsNotNull(getSettingsReader);
             }
 
             [TestMethod]
@@ -91,13 +90,58 @@ namespace toofz.Tests
             {
                 // Arrange
                 var provider = new ServiceSettingsProvider();
-                Func<Stream> getSettingsStream = () => new MemoryStream();
+                Func<TextReader> getSettingsReader = () => new StringReader("");
 
                 // Act
-                provider.GetSettingsStream = getSettingsStream;
+                provider.GetSettingsReader = getSettingsReader;
 
                 // Assert
-                Assert.AreEqual(getSettingsStream, provider.GetSettingsStream);
+                Assert.AreEqual(getSettingsReader, provider.GetSettingsReader);
+            }
+        }
+
+        [TestClass]
+        public class GetSettingsWriter
+        {
+            [TestMethod]
+            public void SetToNull_ThrowsArgumentNullException()
+            {
+                // Arrange
+                var provider = new ServiceSettingsProvider();
+                Func<TextWriter> getSettingsWriter = null;
+
+                // Act -> Assert
+                Assert.ThrowsException<ArgumentNullException>(() =>
+                {
+                    provider.GetSettingsWriter = getSettingsWriter;
+                });
+            }
+
+            [TestMethod]
+            public void ReturnsADefaultValue()
+            {
+                // Arrange
+                var provider = new ServiceSettingsProvider();
+
+                // Act
+                var getSettingsWriter = provider.GetSettingsWriter;
+
+                // Assert
+                Assert.IsNotNull(getSettingsWriter);
+            }
+
+            [TestMethod]
+            public void GetSetBehavior()
+            {
+                // Arrange
+                var provider = new ServiceSettingsProvider();
+                Func<TextWriter> getSettingsWriter = () => new StringWriter();
+
+                // Act
+                provider.GetSettingsWriter = getSettingsWriter;
+
+                // Assert
+                Assert.AreEqual(getSettingsWriter, provider.GetSettingsWriter);
             }
         }
 
@@ -133,16 +177,16 @@ namespace toofz.Tests
         public class GetPropertyValues
         {
             [TestMethod]
-            public void ReturnsValuesFromConfig()
+            public void NoConfig_ReturnsDefaultValues()
             {
                 // Arrange
                 var provider = new ServiceSettingsProvider();
-                provider.GetSettingsStream = () => new MemoryStream(Encoding.UTF8.GetBytes(Resources.UserConfig));
+                provider.GetSettingsReader = () => new StringReader("");
                 var context = new SettingsContext();
                 var properties = new SettingsPropertyCollection();
-                var property1 = new SettingsProperty("myProp1");
+                var property1 = SettingsUtil.CreateProperty("myProp1", "myDefaultValue1");
                 properties.Add(property1);
-                var property2 = new SettingsProperty("myProp2");
+                var property2 = SettingsUtil.CreateProperty("myProp2", "myDefaultValue2");
                 properties.Add(property2);
 
                 // Act
@@ -150,8 +194,50 @@ namespace toofz.Tests
 
                 // Assert
                 Assert.AreEqual(2, values.Count);
-                Assert.AreEqual("mySerializedValue1", values["myProp1"].SerializedValue);
-                Assert.AreEqual("mySerializedValue2", values["myProp2"].SerializedValue);
+                Assert.AreEqual("myDefaultValue1", values["myProp1"].PropertyValue);
+                Assert.AreEqual("myDefaultValue2", values["myProp2"].PropertyValue);
+            }
+
+            [TestMethod]
+            public void HandlesSerializeAsXml()
+            {
+                // Arrange
+                var provider = new ServiceSettingsProvider();
+                provider.GetSettingsReader = () => new StringReader(Resources.SerializeAsXmlConfig);
+                var context = new SettingsContext();
+                var properties = new SettingsPropertyCollection();
+                var property = SettingsUtil.CreateProperty<XmlSerializable>("myProp");
+                property.SerializeAs = SettingsSerializeAs.Xml;
+                properties.Add(property);
+
+                // Act
+                var values = provider.GetPropertyValues(context, properties);
+                var myProp = values["myProp"].PropertyValue;
+
+                // Assert
+                Assert.IsInstanceOfType(myProp, typeof(XmlSerializable));
+            }
+
+            [TestMethod]
+            public void ReturnsValuesFromConfig()
+            {
+                // Arrange
+                var provider = new ServiceSettingsProvider();
+                provider.GetSettingsReader = () => new StringReader(Resources.BasicConfig);
+                var context = new SettingsContext();
+                var properties = new SettingsPropertyCollection();
+                var property1 = SettingsUtil.CreateProperty<string>("myProp1");
+                properties.Add(property1);
+                var property2 = SettingsUtil.CreateProperty<string>("myProp2");
+                properties.Add(property2);
+
+                // Act
+                var values = provider.GetPropertyValues(context, properties);
+
+                // Assert
+                Assert.AreEqual(2, values.Count);
+                Assert.AreEqual("mySerializedValue1", values["myProp1"].PropertyValue);
+                Assert.AreEqual("mySerializedValue2", values["myProp2"].PropertyValue);
             }
         }
 
@@ -163,8 +249,8 @@ namespace toofz.Tests
             {
                 // Arrange
                 var provider = new ServiceSettingsProvider();
-                var ms = new UndisposableMemoryStream();
-                provider.GetSettingsStream = () => ms;
+                var sw = new StringWriter();
+                provider.GetSettingsWriter = () => sw;
                 var context = new SettingsContext();
                 var values = new SettingsPropertyValueCollection();
                 var property1 = new SettingsProperty("myProp1");
@@ -178,11 +264,33 @@ namespace toofz.Tests
                 provider.SetPropertyValues(context, values);
 
                 // Assert
-                ms.Position = 0;
-                using (var sr = new StreamReader(ms))
+                AssertHelper.NormalizedAreEqual(Resources.BasicConfig, sw.ToString());
+            }
+
+            [TestMethod]
+            public void HandlesSerializeAsXml()
+            {
+                // Arrange
+                var provider = new ServiceSettingsProvider();
+                var sw = new StringWriter();
+                provider.GetSettingsWriter = () => sw;
+                var context = new SettingsContext();
+                var values = new SettingsPropertyValueCollection();
+                var value = SettingsUtil.CreatePropertyValue<XmlSerializable>("myProp");
+                value.Property.SerializeAs = SettingsSerializeAs.Xml;
+                value.PropertyValue = new XmlSerializable
                 {
-                    AssertHelper.NormalizedAreEqual(Resources.UserConfig, sr.ReadToEnd());
-                }
+                    Name = "My Serializable Type",
+                    Number = 22,
+                    Data = new byte[] { 1, 2, 3, 4 },
+                };
+                values.Add(value);
+
+                // Act
+                provider.SetPropertyValues(context, values);
+
+                // Assert
+                AssertHelper.NormalizedAreEqual(Resources.SerializeAsXmlConfig, sw.ToString());
             }
         }
     }
