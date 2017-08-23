@@ -61,6 +61,23 @@ namespace toofz.Tests.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;
+        ///&lt;settings&gt;
+        ///  &lt;setting name=&quot;myProp1&quot;&gt;
+        ///    &lt;value&gt;mySerializedValue1&lt;/value&gt;
+        ///  &lt;/setting&gt;
+        ///  &lt;setting name=&quot;myProp2&quot;&gt;
+        ///    &lt;value&gt;mySerializedValue2&lt;/value&gt;
+        ///  &lt;/setting&gt;
+        ///&lt;/settings&gt;.
+        /// </summary>
+        internal static string BasicConfig {
+            get {
+                return ResourceManager.GetString("BasicConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {&quot;myCategory&quot;:{&quot;myItem&quot;:{&quot;id&quot;:12,&quot;display_name&quot;:&quot;My Display Name&quot;}}}.
         /// </summary>
         internal static string Categories {
@@ -88,19 +105,22 @@ namespace toofz.Tests.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;
         ///&lt;settings&gt;
-        ///  &lt;setting name=&quot;myProp1&quot;&gt;
-        ///    &lt;value&gt;mySerializedValue1&lt;/value&gt;
-        ///  &lt;/setting&gt;
-        ///  &lt;setting name=&quot;myProp2&quot;&gt;
-        ///    &lt;value&gt;PT10M&lt;/value&gt;
+        ///  &lt;setting name=&quot;myProp&quot;&gt;
+        ///    &lt;value&gt;
+        ///      &lt;XmlSerializable&gt;
+        ///        &lt;Name&gt;My Serializable Type&lt;/Name&gt;
+        ///        &lt;Number&gt;22&lt;/Number&gt;
+        ///        &lt;Data&gt;AQIDBA==&lt;/Data&gt;
+        ///      &lt;/XmlSerializable&gt;
+        ///    &lt;/value&gt;
         ///  &lt;/setting&gt;
         ///&lt;/settings&gt;.
         /// </summary>
-        internal static string UserConfig {
+        internal static string SerializeAsXmlConfig {
             get {
-                return ResourceManager.GetString("UserConfig", resourceCulture);
+                return ResourceManager.GetString("SerializeAsXmlConfig", resourceCulture);
             }
         }
     }
