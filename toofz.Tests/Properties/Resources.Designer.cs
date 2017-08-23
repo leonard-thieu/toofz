@@ -86,5 +86,22 @@ namespace toofz.Tests.Properties {
                 return ResourceManager.GetString("CategoryItem", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;settings&gt;
+        ///  &lt;setting name=&quot;myProp1&quot;&gt;
+        ///    &lt;value&gt;mySerializedValue1&lt;/value&gt;
+        ///  &lt;/setting&gt;
+        ///  &lt;setting name=&quot;myProp2&quot;&gt;
+        ///    &lt;value&gt;PT10M&lt;/value&gt;
+        ///  &lt;/setting&gt;
+        ///&lt;/settings&gt;.
+        /// </summary>
+        internal static string UserConfig {
+            get {
+                return ResourceManager.GetString("UserConfig", resourceCulture);
+            }
+        }
     }
 }
