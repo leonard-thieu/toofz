@@ -15,7 +15,7 @@ namespace toofz
         /// Initializes an instance of the <see cref="EncryptedSecret"/> class.
         /// </summary>
         /// <param name="secret">The secret to encrypt.</param>
-        /// <exception cref="ArgumentException">
+        /// <exception cref="System.ArgumentException">
         /// <paramref name="secret"/> cannot be null or empty.
         /// </exception>
         public EncryptedSecret(string secret)
