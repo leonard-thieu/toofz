@@ -20,12 +20,12 @@ namespace toofz
         /// renders it.
         /// </summary>
         /// <param name="rendererMap">Not used.</param>
-        /// <param name="obj">The exception.</param>
+        /// <param name="exception">The exception.</param>
         /// <param name="writer">The writer.</param>
         [ExcludeFromCodeCoverage]
-        public void RenderObject(RendererMap rendererMap, object obj, TextWriter writer)
+        public void RenderObject(RendererMap rendererMap, object exception, TextWriter writer)
         {
-            RenderObject(rendererMap, obj, writer, false);
+            RenderObject(rendererMap, exception, writer, false);
         }
 
         /// <summary>
@@ -33,14 +33,14 @@ namespace toofz
         /// renders it.
         /// </summary>
         /// <param name="rendererMap">Not used.</param>
-        /// <param name="obj">The exception.</param>
+        /// <param name="exception">The exception.</param>
         /// <param name="writer">The writer.</param>
         /// <param name="suppressFileInfo">
         /// Suppresses file information in stack traces. This is used for repeatable tests.
         /// </param>
-        internal void RenderObject(RendererMap rendererMap, object obj, TextWriter writer, bool suppressFileInfo)
+        internal void RenderObject(RendererMap rendererMap, object exception, TextWriter writer, bool suppressFileInfo)
         {
-            var ex = (Exception)obj;
+            var ex = (Exception)exception;
             var type = ex.GetType();
 
             var indentedWriter = writer as IndentedTextWriter;
@@ -93,11 +93,13 @@ namespace toofz
         internal static void RenderStackTrace(
             string stackTrace,
             IndentedTextWriter indentedWriter,
-            bool suppressFileInfo = false)
+            bool suppressFileInfo = false,
+            ILog log = null)
         {
             stackTrace = stackTrace ?? "";
+            log = log ?? Log;
 
-            var stackFrames = stackTrace.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            var stackFrames = stackTrace.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             if (stackFrames.Length == 0)
                 return;
@@ -109,20 +111,20 @@ namespace toofz
             {
                 if (stackFrame.StartsWith("   at "))
                 {
-                    var _stackFrame = stackFrame.Remove(0, 6);
+                    var trimmedStackFrame = stackFrame.Remove(0, 6);
                     // Stack frames from System.Runtime.CompilerServices are generally internals for handling async methods. 
                     // They produce a lot of noise in logs so we filter them out when rendering stack traces.
-                    if (!_stackFrame.StartsWith("System.Runtime.CompilerServices"))
+                    if (!trimmedStackFrame.StartsWith("System.Runtime.CompilerServices"))
                     {
                         if (suppressFileInfo)
                         {
-                            var inIndex = _stackFrame.IndexOf(" in ");
+                            var inIndex = trimmedStackFrame.IndexOf(" in ");
                             if (inIndex > -1)
                             {
-                                _stackFrame = _stackFrame.Substring(0, inIndex);
+                                trimmedStackFrame = trimmedStackFrame.Substring(0, inIndex);
                             }
                         }
-                        indentedWriter.WriteLineStart(_stackFrame);
+                        indentedWriter.WriteLineStart(trimmedStackFrame);
                     }
                 }
                 else if (stackFrame.StartsWith("---"))
@@ -131,7 +133,7 @@ namespace toofz
                 }
                 else
                 {
-                    Log.Warn($"Unexpected line while rendering stack trace: '{stackFrame}'.");
+                    log.Warn($"Unexpected line while rendering stack trace: '{stackFrame}'.");
                 }
             }
 
