@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace toofz.Tests
@@ -65,6 +66,24 @@ namespace toofz.Tests
 
                 // Assert
                 Assert.AreEqual(secret, decryptedSecret);
+            }
+        }
+
+        [TestClass]
+        public class GetSchema
+        {
+            [TestMethod]
+            public void ReturnsNull()
+            {
+                // Arrange
+                var encryptedSecret = new EncryptedSecret("mySecret");
+                var xml = (IXmlSerializable)encryptedSecret;
+
+                // Act
+                var schema = xml.GetSchema();
+
+                // Assert
+                Assert.IsNull(schema);
             }
         }
 
