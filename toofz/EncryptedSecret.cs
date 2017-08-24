@@ -1,8 +1,12 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace toofz
 {
-    public sealed class EncryptedSecret
+    public sealed class EncryptedSecret : IXmlSerializable
     {
         // Required for XML serialization
         EncryptedSecret() { }
@@ -16,32 +20,11 @@ namespace toofz
         /// </exception>
         public EncryptedSecret(string secret)
         {
-            (Secret, Salt) = Secrets.Encrypt(secret);
+            (this.secret, salt) = Secrets.Encrypt(secret);
         }
-
-        // Secret and Salt are exposed as public byte[] due to XML serialization requirements.
 
         byte[] secret;
-        public byte[] Secret
-        {
-            get => secret;
-            set => secret = value ?? throw new ArgumentNullException(nameof(value));
-        }
-
         byte[] salt;
-        public byte[] Salt
-        {
-            get => salt;
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value));
-                if (value.Length < 8)
-                    throw new ArgumentException($"The size of the salt must be at least 8 bytes.");
-
-                salt = value;
-            }
-        }
 
         /// <summary>
         /// Decrypts the encrypted secret.
@@ -49,9 +32,57 @@ namespace toofz
         /// <returns>
         /// The decrypted secret.
         /// </returns>
-        public string Decrypt()
+        public string Decrypt() => Secrets.Decrypt(secret, salt);
+
+        #region IXmlSerializable Members
+
+        XmlSchema IXmlSerializable.GetSchema() => null;
+
+        /// <summary>
+        /// Generates an object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// The <see cref="XmlReader"/> stream from which the object is deserialized.
+        /// </param>
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            return Secrets.Decrypt(Secret, Salt);
+            reader.ReadStartElement();
+            secret = ReadElementContentAsBase64();
+            salt = ReadElementContentAsBase64();
+            reader.ReadEndElement();
+
+            byte[] ReadElementContentAsBase64()
+            {
+                var result = new List<byte>();
+                var buffer = new byte[1024];
+                var readBytes = 0;
+
+                while ((readBytes = reader.ReadElementContentAsBase64(buffer, 0, buffer.Length)) > 0)
+                {
+                    result.AddRange(buffer.Take(readBytes));
+                }
+
+                return result.ToArray();
+            }
         }
+
+        /// <summary>
+        /// Converts an object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// The <see cref="XmlWriter"/> stream to which the object is serialized.
+        /// </param>
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("Secret");
+            writer.WriteBase64(secret, 0, secret.Length);
+            writer.WriteEndElement();
+
+            writer.WriteStartElement("Salt");
+            writer.WriteBase64(salt, 0, salt.Length);
+            writer.WriteEndElement();
+        }
+
+        #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace toofz.Tests
@@ -51,84 +52,6 @@ namespace toofz.Tests
         }
 
         [TestClass]
-        public class Secret
-        {
-            [TestMethod]
-            public void ValueIsNull_ThrowsArgumentNullException()
-            {
-                // Arrange
-                var encryptedSecret = new EncryptedSecret("mySecret");
-                byte[] secret = null;
-
-                // Act -> Assert
-                Assert.ThrowsException<ArgumentNullException>(() =>
-                {
-                    encryptedSecret.Secret = secret;
-                });
-            }
-
-            [TestMethod]
-            public void GetSetBehavior()
-            {
-                // Arrange
-                var encryptedSecret = new EncryptedSecret("mySecret");
-                byte[] secret = new byte[0];
-
-                // Act
-                encryptedSecret.Secret = secret;
-
-                // Assert
-                Assert.AreEqual(secret, encryptedSecret.Secret);
-            }
-        }
-
-        [TestClass]
-        public class Salt
-        {
-            [TestMethod]
-            public void ValueIsNull_ThrowsArgumentNullException()
-            {
-                // Arrange
-                var encryptedSecret = new EncryptedSecret("mySecret");
-                byte[] salt = null;
-
-                // Act -> Assert
-                Assert.ThrowsException<ArgumentNullException>(() =>
-                {
-                    encryptedSecret.Salt = salt;
-                });
-            }
-
-            [TestMethod]
-            public void ValueIsLessThan8Bytes_ThrowsArgumentException()
-            {
-                // Arrange
-                var encryptedSecret = new EncryptedSecret("mySecret");
-                byte[] salt = new byte[7];
-
-                // Act -> Assert
-                Assert.ThrowsException<ArgumentException>(() =>
-                {
-                    encryptedSecret.Salt = salt;
-                });
-            }
-
-            [TestMethod]
-            public void GetSetBehavior()
-            {
-                // Arrange
-                var encryptedSecret = new EncryptedSecret("mySecret");
-                byte[] salt = new byte[8];
-
-                // Act
-                encryptedSecret.Salt = salt;
-
-                // Assert
-                Assert.AreEqual(salt, encryptedSecret.Salt);
-            }
-        }
-
-        [TestClass]
         public class Decrypt
         {
             [TestMethod]
@@ -143,6 +66,24 @@ namespace toofz.Tests
 
                 // Assert
                 Assert.AreEqual(secret, decryptedSecret);
+            }
+        }
+
+        [TestClass]
+        public class GetSchema
+        {
+            [TestMethod]
+            public void ReturnsNull()
+            {
+                // Arrange
+                var encryptedSecret = new EncryptedSecret("mySecret");
+                var xml = (IXmlSerializable)encryptedSecret;
+
+                // Act
+                var schema = xml.GetSchema();
+
+                // Assert
+                Assert.IsNull(schema);
             }
         }
 
@@ -180,8 +121,7 @@ namespace toofz.Tests
                 // Assert
                 Assert.IsInstanceOfType(myProp, typeof(EncryptedSecret));
                 var encryptedSecret2 = (EncryptedSecret)myProp;
-                CollectionAssert.AreEqual(encryptedSecret.Secret, encryptedSecret2.Secret);
-                CollectionAssert.AreEqual(encryptedSecret.Salt, encryptedSecret2.Salt);
+                Assert.AreEqual("mySecret", encryptedSecret2.Decrypt());
             }
         }
     }
