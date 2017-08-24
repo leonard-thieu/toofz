@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 
 namespace toofz
 {
-    [TypeConverter(typeof(EncryptedSecretConverter))]
     public sealed class EncryptedSecret
     {
+        // Required for XML serialization
+        EncryptedSecret() { }
+
         /// <summary>
         /// Initializes an instance of the <see cref="EncryptedSecret"/> class.
         /// </summary>
@@ -17,39 +16,32 @@ namespace toofz
         /// </exception>
         public EncryptedSecret(string secret)
         {
-            var (encrypted, salt) = Secrets.Encrypt(secret);
-            Initialize(encrypted, salt);
+            (Secret, Salt) = Secrets.Encrypt(secret);
         }
 
-        internal EncryptedSecret(byte[] encrypted, byte[] salt)
+        // Secret and Salt are exposed as public byte[] due to XML serialization requirements.
+
+        byte[] secret;
+        public byte[] Secret
         {
-            Initialize(encrypted, salt);
+            get => secret;
+            set => secret = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        void Initialize(byte[] encrypted, byte[] salt)
-        {
-            Secret = Array.AsReadOnly(encrypted);
-            Salt = Array.AsReadOnly(salt);
-        }
-
-        internal ReadOnlyCollection<byte> Secret { get; private set; }
-
-        ReadOnlyCollection<byte> salt;
-        internal ReadOnlyCollection<byte> Salt
+        byte[] salt;
+        public byte[] Salt
         {
             get => salt;
-            private set
+            set
             {
-                if (value.Count < 8 || value.Count > byte.MaxValue)
-                {
-                    throw new InvalidOperationException($"The size of the salt must be at least 8 bytes and no more than {byte.MaxValue} bytes.");
-                }
-                SaltSize = Convert.ToByte(value.Count);
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+                if (value.Length < 8)
+                    throw new ArgumentException($"The size of the salt must be at least 8 bytes.");
+
                 salt = value;
             }
         }
-
-        internal byte SaltSize { get; private set; }
 
         /// <summary>
         /// Decrypts the encrypted secret.
@@ -59,7 +51,7 @@ namespace toofz
         /// </returns>
         public string Decrypt()
         {
-            return Secrets.Decrypt(Secret.ToArray(), Salt.ToArray());
+            return Secrets.Decrypt(Secret, Salt);
         }
     }
 }

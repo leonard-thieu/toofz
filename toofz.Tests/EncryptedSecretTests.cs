@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Configuration;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace toofz.Tests
@@ -49,6 +51,84 @@ namespace toofz.Tests
         }
 
         [TestClass]
+        public class Secret
+        {
+            [TestMethod]
+            public void ValueIsNull_ThrowsArgumentNullException()
+            {
+                // Arrange
+                var encryptedSecret = new EncryptedSecret("mySecret");
+                byte[] secret = null;
+
+                // Act -> Assert
+                Assert.ThrowsException<ArgumentNullException>(() =>
+                {
+                    encryptedSecret.Secret = secret;
+                });
+            }
+
+            [TestMethod]
+            public void GetSetBehavior()
+            {
+                // Arrange
+                var encryptedSecret = new EncryptedSecret("mySecret");
+                byte[] secret = new byte[0];
+
+                // Act
+                encryptedSecret.Secret = secret;
+
+                // Assert
+                Assert.AreEqual(secret, encryptedSecret.Secret);
+            }
+        }
+
+        [TestClass]
+        public class Salt
+        {
+            [TestMethod]
+            public void ValueIsNull_ThrowsArgumentNullException()
+            {
+                // Arrange
+                var encryptedSecret = new EncryptedSecret("mySecret");
+                byte[] salt = null;
+
+                // Act -> Assert
+                Assert.ThrowsException<ArgumentNullException>(() =>
+                {
+                    encryptedSecret.Salt = salt;
+                });
+            }
+
+            [TestMethod]
+            public void ValueIsLessThan8Bytes_ThrowsArgumentException()
+            {
+                // Arrange
+                var encryptedSecret = new EncryptedSecret("mySecret");
+                byte[] salt = new byte[7];
+
+                // Act -> Assert
+                Assert.ThrowsException<ArgumentException>(() =>
+                {
+                    encryptedSecret.Salt = salt;
+                });
+            }
+
+            [TestMethod]
+            public void GetSetBehavior()
+            {
+                // Arrange
+                var encryptedSecret = new EncryptedSecret("mySecret");
+                byte[] salt = new byte[8];
+
+                // Act
+                encryptedSecret.Salt = salt;
+
+                // Assert
+                Assert.AreEqual(salt, encryptedSecret.Salt);
+            }
+        }
+
+        [TestClass]
         public class Decrypt
         {
             [TestMethod]
@@ -63,6 +143,45 @@ namespace toofz.Tests
 
                 // Assert
                 Assert.AreEqual(secret, decryptedSecret);
+            }
+        }
+
+        [TestClass]
+        public class Serialization
+        {
+            [TestMethod]
+            public void SerializesAndDeserializes()
+            {
+                // Arrange
+                var provider = new ServiceSettingsProvider();
+                var sw = new StringWriter();
+                provider.GetSettingsWriter = () => sw;
+                var context = new SettingsContext();
+                var values = new SettingsPropertyValueCollection();
+                var property = SettingsUtil.CreateProperty<EncryptedSecret>("myProp");
+                property.SerializeAs = SettingsSerializeAs.Xml;
+                var value = new SettingsPropertyValue(property);
+                var encryptedSecret = new EncryptedSecret("mySecret");
+                value.PropertyValue = encryptedSecret;
+                values.Add(value);
+
+                // Act
+                provider.SetPropertyValues(context, values);
+
+                // Arrange
+                provider.GetSettingsReader = () => new StringReader(sw.ToString());
+                var properties = new SettingsPropertyCollection();
+                properties.Add(property);
+
+                // Act
+                var values2 = provider.GetPropertyValues(context, properties);
+                var myProp = values2["myProp"].PropertyValue;
+
+                // Assert
+                Assert.IsInstanceOfType(myProp, typeof(EncryptedSecret));
+                var encryptedSecret2 = (EncryptedSecret)myProp;
+                CollectionAssert.AreEqual(encryptedSecret.Secret, encryptedSecret2.Secret);
+                CollectionAssert.AreEqual(encryptedSecret.Salt, encryptedSecret2.Salt);
             }
         }
     }
