@@ -114,6 +114,7 @@
     <None Include="Resources\Category.json" />
     <None Include="Resources\CategoryItem.json" />
     <None Include="Resources\SerializeAsXml.config" />
+    <None Include="Resources\TimeSpan.config" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>

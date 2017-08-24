@@ -23,15 +23,6 @@ namespace toofz.Tests.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("247080")]
-        public uint AppId {
-            get {
-                return ((uint)(this["AppId"]));
-            }
-        }
-        
         /// <summary>
         /// Used as a flag to ensure the settings provider is called.
         /// </summary>
@@ -45,6 +36,27 @@ namespace toofz.Tests.Properties {
             }
             set {
                 this["ForceSave"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("247080")]
+        public uint AppId {
+            get {
+                return ((uint)(this["AppId"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:02:00")]
+        public global::System.TimeSpan Duration {
+            get {
+                return ((global::System.TimeSpan)(this["Duration"]));
+            }
+            set {
+                this["Duration"] = value;
             }
         }
     }

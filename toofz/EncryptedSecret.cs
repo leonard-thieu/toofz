@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -8,6 +7,9 @@ namespace toofz
 {
     public sealed class EncryptedSecret : IXmlSerializable
     {
+        const string SecretName = "Secret";
+        const string SaltName = "Salt";
+
         // Required for XML serialization
         EncryptedSecret() { }
 
@@ -46,24 +48,10 @@ namespace toofz
         /// </param>
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            reader.ReadStartElement();
-            secret = ReadElementContentAsBase64();
-            salt = ReadElementContentAsBase64();
+            reader.ReadStartElement(nameof(EncryptedSecret));
+            secret = Convert.FromBase64String(reader.ReadElementContentAsString(SecretName, ""));
+            salt = Convert.FromBase64String(reader.ReadElementContentAsString(SaltName, ""));
             reader.ReadEndElement();
-
-            byte[] ReadElementContentAsBase64()
-            {
-                var result = new List<byte>();
-                var buffer = new byte[1024];
-                var readBytes = 0;
-
-                while ((readBytes = reader.ReadElementContentAsBase64(buffer, 0, buffer.Length)) > 0)
-                {
-                    result.AddRange(buffer.Take(readBytes));
-                }
-
-                return result.ToArray();
-            }
         }
 
         /// <summary>
@@ -74,11 +62,11 @@ namespace toofz
         /// </param>
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            writer.WriteStartElement("Secret");
+            writer.WriteStartElement(SecretName);
             writer.WriteBase64(secret, 0, secret.Length);
             writer.WriteEndElement();
 
-            writer.WriteStartElement("Salt");
+            writer.WriteStartElement(SaltName);
             writer.WriteBase64(salt, 0, salt.Length);
             writer.WriteEndElement();
         }
