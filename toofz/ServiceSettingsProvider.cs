@@ -179,19 +179,24 @@ namespace toofz
                 {
                     // Persist value even if it's the default value. This makes it easier for users to modify settings by hand since 
                     // they won't have to look up the setting name and value type.
-                    var valueVal = value.UsingDefaultValue ?
-                        value.PropertyValue :
-                        value.SerializedValue;
+                    if (value.UsingDefaultValue)
+                    {
+                        // Set PropertyValue to itself to serialize it.
+                        value.PropertyValue = value.PropertyValue;
+                    }
                     settings.Add(
                         new XElement(SettingName, new XAttribute(NameName, value.Name),
-                            new XElement(ValueName, valueVal)));
+                            new XElement(ValueName, value.SerializedValue)));
                 }
                 else if (property.SerializeAs == SettingsSerializeAs.Xml)
                 {
                     using (var sw = new StringWriter())
                     {
                         var serializer = new XmlSerializer(property.PropertyType);
+                        // Serialize without namespaces
                         serializer.Serialize(sw, value.PropertyValue, EmptyNamespaces);
+                        // Inserting the serialized value would cause it to be escaped. To get around that, the value is deserialized
+                        // via LINQ to XML and inserted into the document.
                         var valueDoc = XDocument.Parse(sw.ToString());
                         settings.Add(
                             new XElement(SettingName, new XAttribute(NameName, value.Name),

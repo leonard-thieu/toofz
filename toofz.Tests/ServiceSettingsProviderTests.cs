@@ -294,25 +294,46 @@ namespace toofz.Tests
                 // Assert
                 AssertHelper.NormalizedAreEqual(Resources.SerializeAsXmlConfig, sw.ToString());
             }
+
+            [TestMethod]
+            public void SerializesTimeSpanInHumanReadableFormat()
+            {
+                // Arrange
+                var provider = new ServiceSettingsProvider();
+                var sw = new StringWriter();
+                provider.GetSettingsWriter = () => sw;
+                var context = new SettingsContext();
+                var values = new SettingsPropertyValueCollection();
+                var value = SettingsUtil.CreatePropertyValue<TimeSpan>("myProp");
+                value.PropertyValue = TimeSpan.Zero;
+                values.Add(value);
+
+                // Act
+                provider.SetPropertyValues(context, values);
+
+                // Assert
+                AssertHelper.NormalizedAreEqual(Resources.TimeSpanConfig, sw.ToString());
+            }
         }
 
         [TestClass]
         [TestCategory("Integration")]
         public class IntegrationTests
         {
+            TestSettings settings;
+
             [TestInitialize]
             public void TestInit()
             {
                 File.Delete(ServiceSettingsProvider.ConfigFileName);
+                settings = TestSettings.Default;
+                settings.Reload();
             }
 
             [TestMethod]
             public void ReturnsDefaultValueIfValueIsNotPresent()
             {
-                // Arrange
-                var settings = TestSettings.Default;
-
-                // Act
+                // Arrange -> Act
                 var appId = settings.AppId;
 
                 // Assert
@@ -323,7 +344,6 @@ namespace toofz.Tests
             public void SavesChangedSetting()
             {
                 // Arrange
-                var settings = TestSettings.Default;
                 settings.ForceSave = true;
 
                 // Act
@@ -339,7 +359,6 @@ namespace toofz.Tests
             public void PersistsDefaultValue()
             {
                 // Arrange
-                var settings = TestSettings.Default;
                 settings.ForceSave = true;
 
                 // Act
@@ -352,6 +371,57 @@ namespace toofz.Tests
                                select s.Element("value"))
                               .Single();
                 Assert.AreEqual(247080.ToString(), appIdEl.Value);
+            }
+
+            [TestMethod]
+            public void PersistsDefaultTimeSpanInHumanReadableFormat()
+            {
+                // Arrange
+                settings.ForceSave = true;
+
+                // Act
+                settings.Save();
+
+                // Assert
+                var doc = XDocument.Load(ServiceSettingsProvider.ConfigFileName);
+                var durationEl = (from s in doc.Descendants("setting")
+                                  where s.Attributes("name").Single().Value == "Duration"
+                                  select s.Element("value"))
+                                 .Single();
+                Assert.AreEqual("00:02:00", durationEl.Value);
+            }
+
+            [TestMethod]
+            public void PersistsSpecifiedTimeSpanInHumanReadableFormat()
+            {
+                // Arrange
+                settings.Duration = TimeSpan.FromSeconds(234);
+
+                // Act
+                settings.Save();
+
+                // Assert
+                var doc = XDocument.Load(ServiceSettingsProvider.ConfigFileName);
+                var durationEl = (from s in doc.Descendants("setting")
+                                  where s.Attributes("name").Single().Value == "Duration"
+                                  select s.Element("value"))
+                                 .Single();
+                Assert.AreEqual("00:03:54", durationEl.Value);
+            }
+
+            [TestMethod]
+            public void ReadsTimeSpanInHumanReadableFormat()
+            {
+                // Arrange
+                settings.Duration = TimeSpan.FromSeconds(234);
+                settings.Save();
+
+                // Act
+                settings.Reload();
+                var duration = settings.Duration;
+
+                // Assert
+                Assert.AreEqual(TimeSpan.FromSeconds(234), duration);
             }
         }
     }

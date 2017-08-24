@@ -123,5 +123,19 @@ namespace toofz.Tests.Properties {
                 return ResourceManager.GetString("SerializeAsXmlConfig", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;
+        ///&lt;settings&gt;
+        ///  &lt;setting name=&quot;myProp&quot;&gt;
+        ///    &lt;value&gt;00:00:00&lt;/value&gt;
+        ///  &lt;/setting&gt;
+        ///&lt;/settings&gt;.
+        /// </summary>
+        internal static string TimeSpanConfig {
+            get {
+                return ResourceManager.GetString("TimeSpanConfig", resourceCulture);
+            }
+        }
     }
 }
