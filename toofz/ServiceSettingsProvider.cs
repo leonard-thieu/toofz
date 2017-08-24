@@ -4,15 +4,17 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using log4net;
 
 namespace toofz
 {
     public sealed class ServiceSettingsProvider : SettingsProvider
     {
-        const string ConfigFileName = "user.config";
+        static readonly ILog Log = LogManager.GetLogger(typeof(ServiceSettingsProvider));
+
+        internal const string ConfigFileName = "user.config";
         const string SettingsName = "settings";
         const string SettingName = "setting";
         const string NameName = "name";
@@ -102,16 +104,18 @@ namespace toofz
             var values = new SettingsPropertyValueCollection();
 
             XDocument doc;
-            using (var reader = GetSettingsReader())
+            try
             {
-                try
+                using (var reader = GetSettingsReader())
                 {
                     doc = XDocument.Load(reader);
                 }
-                catch (XmlException)
-                {
-                    doc = new XDocument(new XElement(SettingsName));
-                }
+            }
+            // This catches exceptions from both loading and parsing.
+            catch (Exception ex)
+            {
+                Log.Warn("Unable to read settings.", ex);
+                doc = new XDocument(new XElement(SettingsName));
             }
             var settings = doc.Element(SettingsName);
 
@@ -133,7 +137,7 @@ namespace toofz
                         var valueEl = setting.Element(ValueName)?.Elements()?.FirstOrDefault();
                         if (valueEl != null)
                         {
-                            // The XmlReader returned from XObject.CreateReader() cannot read base64 encoded values.
+                            // The XmlReader returned from XObject.CreateReader() cannot read Base64 encoded values.
                             // To get around that, the value is serialized into memory and then deserialized using XmlSerializer.
                             using (var ms = new MemoryStream())
                             {
@@ -173,9 +177,14 @@ namespace toofz
                 var property = value.Property;
                 if (property.SerializeAs == SettingsSerializeAs.String)
                 {
+                    // Persist value even if it's the default value. This makes it easier for users to modify settings by hand since 
+                    // they won't have to look up the setting name and value type.
+                    var valueVal = value.UsingDefaultValue ?
+                        value.PropertyValue :
+                        value.SerializedValue;
                     settings.Add(
                         new XElement(SettingName, new XAttribute(NameName, value.Name),
-                            new XElement(ValueName, value.SerializedValue)));
+                            new XElement(ValueName, valueVal)));
                 }
                 else if (property.SerializeAs == SettingsSerializeAs.Xml)
                 {
@@ -186,7 +195,7 @@ namespace toofz
                         var valueDoc = XDocument.Parse(sw.ToString());
                         settings.Add(
                             new XElement(SettingName, new XAttribute(NameName, value.Name),
-                            new XElement(ValueName, valueDoc.Root)));
+                                new XElement(ValueName, valueDoc.Root)));
                     }
                 }
                 // SettingsSerializeAs.Binary and SettingsSerializeAs.ProviderSpecific are not supported.

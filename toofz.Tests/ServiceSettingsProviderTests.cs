@@ -2,6 +2,8 @@
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using toofz.Tests.Properties;
 using toofz.TestsShared;
@@ -291,6 +293,65 @@ namespace toofz.Tests
 
                 // Assert
                 AssertHelper.NormalizedAreEqual(Resources.SerializeAsXmlConfig, sw.ToString());
+            }
+        }
+
+        [TestClass]
+        [TestCategory("Integration")]
+        public class IntegrationTests
+        {
+            [TestInitialize]
+            public void TestInit()
+            {
+                File.Delete(ServiceSettingsProvider.ConfigFileName);
+            }
+
+            [TestMethod]
+            public void ReturnsDefaultValueIfValueIsNotPresent()
+            {
+                // Arrange
+                var settings = TestSettings.Default;
+
+                // Act
+                var appId = settings.AppId;
+
+                // Assert
+                Assert.AreEqual(247080U, appId);
+            }
+
+            [TestMethod]
+            public void SavesChangedSetting()
+            {
+                // Arrange
+                var settings = TestSettings.Default;
+                settings.ForceSave = true;
+
+                // Act
+                settings.Save();
+                settings.Reload();
+                var appId = settings.AppId;
+
+                // Assert
+                Assert.IsTrue(settings.ForceSave);
+            }
+
+            [TestMethod]
+            public void PersistsDefaultValue()
+            {
+                // Arrange
+                var settings = TestSettings.Default;
+                settings.ForceSave = true;
+
+                // Act
+                settings.Save();
+
+                // Assert
+                var doc = XDocument.Load(ServiceSettingsProvider.ConfigFileName);
+                var appIdEl = (from s in doc.Descendants("setting")
+                               where s.Attributes("name").Single().Value == "AppId"
+                               select s.Element("value"))
+                              .Single();
+                Assert.AreEqual(247080.ToString(), appIdEl.Value);
             }
         }
     }
