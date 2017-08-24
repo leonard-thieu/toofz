@@ -114,7 +114,7 @@ namespace toofz
             // This catches exceptions from both loading and parsing.
             catch (Exception ex)
             {
-                Log.Warn("Unable to read settings.", ex);
+                Log.Debug("Unable to read settings.", ex);
                 doc = new XDocument(new XElement(SettingsName));
             }
             var settings = doc.Element(SettingsName);
