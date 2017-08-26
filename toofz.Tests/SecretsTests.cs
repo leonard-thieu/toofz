@@ -14,11 +14,12 @@ namespace toofz.Tests
             {
                 // Arrange
                 string secret = null;
+                int iterations = 1000;
 
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentException>(() =>
                 {
-                    Secrets.Encrypt(secret);
+                    Secrets.Encrypt(secret, iterations);
                 });
             }
 
@@ -27,11 +28,26 @@ namespace toofz.Tests
             {
                 // Arrange
                 string secret = "";
+                int iterations = 1000;
 
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentException>(() =>
                 {
-                    Secrets.Encrypt(secret);
+                    Secrets.Encrypt(secret, iterations);
+                });
+            }
+
+            [TestMethod]
+            public void IterationsIsNegative_ThrowsArgumentOutOfRangeException()
+            {
+                // Arrange
+                string secret = "mySecret";
+                int iterations = -1;
+
+                // Act -> Assert
+                Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+                {
+                    Secrets.Encrypt(secret, iterations);
                 });
             }
 
@@ -40,9 +56,10 @@ namespace toofz.Tests
             {
                 // Arrange
                 string secret = "mySecret";
+                int iterations = 1000;
 
                 // Act
-                var (encrypted, salt) = Secrets.Encrypt(secret);
+                var (encrypted, salt) = Secrets.Encrypt(secret, iterations);
 
                 // Assert
                 Assert.IsTrue(encrypted.Any());
@@ -53,9 +70,10 @@ namespace toofz.Tests
             {
                 // Arrange
                 string secret = "mySecret";
+                int iterations = 1000;
 
                 // Act
-                var (encrypted, salt) = Secrets.Encrypt(secret);
+                var (encrypted, salt) = Secrets.Encrypt(secret, iterations);
 
                 // Assert
                 Assert.IsTrue(salt.Any());
@@ -71,11 +89,12 @@ namespace toofz.Tests
                 // Arrange
                 byte[] encrypted = null;
                 byte[] salt = new byte[8];
+                int iterations = 1000;
 
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentNullException>(() =>
                 {
-                    Secrets.Decrypt(encrypted, salt);
+                    Secrets.Decrypt(encrypted, salt, iterations);
                 });
             }
 
@@ -85,11 +104,12 @@ namespace toofz.Tests
                 // Arrange
                 byte[] encrypted = new byte[8];
                 byte[] salt = null;
+                int iterations = 1000;
 
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentNullException>(() =>
                 {
-                    Secrets.Decrypt(encrypted, salt);
+                    Secrets.Decrypt(encrypted, salt, iterations);
                 });
             }
 
@@ -99,11 +119,27 @@ namespace toofz.Tests
                 // Arrange
                 byte[] encrypted = new byte[8];
                 byte[] salt = new byte[0];
+                int iterations = 1000;
 
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentException>(() =>
                 {
-                    Secrets.Decrypt(encrypted, salt);
+                    Secrets.Decrypt(encrypted, salt, iterations);
+                });
+            }
+
+            [TestMethod]
+            public void IterationsIsNegative_ThrowsArgumentOutOfRangeException()
+            {
+                // Arrange
+                byte[] encrypted = new byte[8];
+                byte[] salt = new byte[8];
+                int iterations = -1;
+
+                // Act -> Assert
+                Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+                {
+                    Secrets.Decrypt(encrypted, salt, iterations);
                 });
             }
 
@@ -112,10 +148,11 @@ namespace toofz.Tests
             {
                 // Arrange
                 var secret = "mySecret";
-                var (encrypted, salt) = Secrets.Encrypt(secret);
+                int iterations = 1000;
+                var (encrypted, salt) = Secrets.Encrypt(secret, iterations);
 
                 // Act
-                var decrypted = Secrets.Decrypt(encrypted, salt);
+                var decrypted = Secrets.Decrypt(encrypted, salt, iterations);
 
                 // Assert
                 Assert.AreEqual(secret, decrypted);

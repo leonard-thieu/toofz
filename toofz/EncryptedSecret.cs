@@ -9,6 +9,7 @@ namespace toofz
     {
         const string SecretName = "Secret";
         const string SaltName = "Salt";
+        const string IterationsName = "Iterations";
 
         // Required for XML serialization
         EncryptedSecret() { }
@@ -20,13 +21,15 @@ namespace toofz
         /// <exception cref="System.ArgumentException">
         /// <paramref name="secret"/> cannot be null or empty.
         /// </exception>
-        public EncryptedSecret(string secret)
+        public EncryptedSecret(string secret, int iterations)
         {
-            (this.secret, salt) = Secrets.Encrypt(secret);
+            (this.secret, salt) = Secrets.Encrypt(secret, iterations);
+            this.iterations = iterations;
         }
 
         byte[] secret;
         byte[] salt;
+        int iterations;
 
         /// <summary>
         /// Decrypts the encrypted secret.
@@ -34,7 +37,7 @@ namespace toofz
         /// <returns>
         /// The decrypted secret.
         /// </returns>
-        public string Decrypt() => Secrets.Decrypt(secret, salt);
+        public string Decrypt() => Secrets.Decrypt(secret, salt, iterations);
 
         #region IXmlSerializable Members
 
@@ -51,6 +54,7 @@ namespace toofz
             reader.ReadStartElement(nameof(EncryptedSecret));
             secret = Convert.FromBase64String(reader.ReadElementContentAsString(SecretName, ""));
             salt = Convert.FromBase64String(reader.ReadElementContentAsString(SaltName, ""));
+            iterations = reader.ReadElementContentAsInt(IterationsName, "");
             reader.ReadEndElement();
         }
 
@@ -68,6 +72,10 @@ namespace toofz
 
             writer.WriteStartElement(SaltName);
             writer.WriteBase64(salt, 0, salt.Length);
+            writer.WriteEndElement();
+
+            writer.WriteStartElement(IterationsName);
+            writer.WriteValue(iterations);
             writer.WriteEndElement();
         }
 
