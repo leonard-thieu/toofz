@@ -5,11 +5,13 @@ using System.Xml.Serialization;
 
 namespace toofz
 {
+    [XmlRoot(EncryptedSecretName)]
     public sealed class EncryptedSecret : IXmlSerializable
     {
-        const string SecretName = "Secret";
-        const string SaltName = "Salt";
-        const string IterationsName = "Iterations";
+        const string EncryptedSecretName = "encryptedSecret";
+        const string SecretName = "secret";
+        const string SaltName = "salt";
+        const string IterationsName = "iterations";
 
         // Required for XML serialization
         EncryptedSecret() { }
@@ -51,7 +53,7 @@ namespace toofz
         /// </param>
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            reader.ReadStartElement(nameof(EncryptedSecret));
+            reader.ReadStartElement(EncryptedSecretName);
             secret = Convert.FromBase64String(reader.ReadElementContentAsString(SecretName, ""));
             salt = Convert.FromBase64String(reader.ReadElementContentAsString(SaltName, ""));
             iterations = reader.ReadElementContentAsInt(IterationsName, "");
