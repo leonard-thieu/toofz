@@ -10,12 +10,9 @@ namespace toofz
     /// <summary>
     /// Provides methods for encrypting and decrypting secrets.
     /// </summary>
-    public static class Secrets
+    static class Secrets
     {
         const int SaltSize = 8;
-        // https://msdn.microsoft.com/en-us/library/system.security.cryptography.rfc2898derivebytes.iterationcount(v=vs.110).aspx#Remarks
-        // Defaults to 1000 (minimum recommended of iterations). Consumers should increase this based on their requirements.
-        public static int Iterations { get; set; } = 1000;
 
         // Using the host's physical address is a compromise between security and ease of use.
         // One of the goals of the toofz projects is for the code to be easy to evaluate and understand.
@@ -31,18 +28,22 @@ namespace toofz
         /// Encrypts a secret.
         /// </summary>
         /// <param name="secret">The secret to encrypt.</param>
+        /// <param name="iterations">The number of iterations for the operation.</param>
         /// <returns>
         /// The encrypted secret and its associated salt.
         /// </returns>
         /// <exception cref="ArgumentException">
         /// <paramref name="secret"/> cannot be null or empty.
         /// </exception>
-        public static (byte[] encrypted, byte[] salt) Encrypt(string secret)
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="iterations"/> is out of range. This parameter requires a non-negative number.
+        /// </exception>
+        public static (byte[] encrypted, byte[] salt) Encrypt(string secret, int iterations)
         {
             if (string.IsNullOrEmpty(secret))
                 throw new ArgumentException($"{nameof(secret)} cannot be null or empty.", nameof(secret));
 
-            using (var pbkdf2 = new Rfc2898DeriveBytes(Password, SaltSize, Iterations))
+            using (var pbkdf2 = new Rfc2898DeriveBytes(Password, SaltSize, iterations))
             using (var alg = Rijndael.Create())
             {
                 alg.Key = pbkdf2.GetBytes(32);
@@ -68,6 +69,7 @@ namespace toofz
         /// </summary>
         /// <param name="encrypted">The encrypted secret.</param>
         /// <param name="salt">The encrypted secret's associated salt.</param>
+        /// <param name="iterations">The number of iterations for the operation.</param>
         /// <returns>
         /// The decrypted secret.
         /// </returns>
@@ -77,14 +79,17 @@ namespace toofz
         /// <exception cref="ArgumentNullException">
         /// <paramref name="salt"/> cannot be null.
         /// </exception>
-        public static string Decrypt(byte[] encrypted, byte[] salt)
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="iterations"/> is out of range. This parameter requires a non-negative number.
+        /// </exception>
+        public static string Decrypt(byte[] encrypted, byte[] salt, int iterations)
         {
             if (encrypted == null)
                 throw new ArgumentNullException(nameof(encrypted));
             if (salt == null)
                 throw new ArgumentNullException(nameof(salt));
 
-            using (var pbkdf2 = new Rfc2898DeriveBytes(Password, salt, Iterations))
+            using (var pbkdf2 = new Rfc2898DeriveBytes(Password, salt, iterations))
             using (var alg = Rijndael.Create())
             {
                 alg.Key = pbkdf2.GetBytes(32);

@@ -16,11 +16,12 @@ namespace toofz.Tests
             {
                 // Arrange
                 string secret = null;
+                int iterations = 1000;
 
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentException>(() =>
                 {
-                    new EncryptedSecret(secret);
+                    new EncryptedSecret(secret, iterations);
                 });
             }
 
@@ -29,11 +30,12 @@ namespace toofz.Tests
             {
                 // Arrange
                 string secret = "";
+                int iterations = 1000;
 
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentException>(() =>
                 {
-                    new EncryptedSecret(secret);
+                    new EncryptedSecret(secret, iterations);
                 });
             }
 
@@ -42,9 +44,10 @@ namespace toofz.Tests
             {
                 // Arrange
                 string secret = "mySecret";
+                int iterations = 1000;
 
                 // Act
-                var encryptedSecret = new EncryptedSecret(secret);
+                var encryptedSecret = new EncryptedSecret(secret, iterations);
 
                 // Assert
                 Assert.IsInstanceOfType(encryptedSecret, typeof(EncryptedSecret));
@@ -59,7 +62,8 @@ namespace toofz.Tests
             {
                 // Arrange
                 string secret = "mySecret";
-                var encryptedSecret = new EncryptedSecret(secret);
+                int iterations = 1000;
+                var encryptedSecret = new EncryptedSecret(secret, iterations);
 
                 // Act
                 var decryptedSecret = encryptedSecret.Decrypt();
@@ -76,7 +80,7 @@ namespace toofz.Tests
             public void ReturnsNull()
             {
                 // Arrange
-                var encryptedSecret = new EncryptedSecret("mySecret");
+                var encryptedSecret = new EncryptedSecret("mySecret", 1000);
                 var xml = (IXmlSerializable)encryptedSecret;
 
                 // Act
@@ -102,7 +106,7 @@ namespace toofz.Tests
                 var property = SettingsUtil.CreateProperty<EncryptedSecret>("myProp");
                 property.SerializeAs = SettingsSerializeAs.Xml;
                 var value = new SettingsPropertyValue(property);
-                var encryptedSecret = new EncryptedSecret("mySecret");
+                var encryptedSecret = new EncryptedSecret("mySecret", 1000);
                 value.PropertyValue = encryptedSecret;
                 values.Add(value);
 
