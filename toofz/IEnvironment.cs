@@ -5,6 +5,11 @@ namespace toofz
     public interface IEnvironment
     {
         /// <summary>
+        /// Gets a value indicating whether the current process is running in user interactive mode.
+        /// </summary>
+        bool UserInteractive { get; }
+
+        /// <summary>
         /// Retrieves the value of an environment variable from the current process or from
         /// the Windows operating system registry key for the current user or local machine.
         /// </summary>

@@ -4,8 +4,13 @@ using System.Diagnostics.CodeAnalysis;
 namespace toofz
 {
     [ExcludeFromCodeCoverage]
-    sealed class EnvironmentAdapter : IEnvironment
+    public sealed class EnvironmentAdapter : IEnvironment
     {
+        /// <summary>
+        /// Gets a value indicating whether the current process is running in user interactive mode.
+        /// </summary>
+        public bool UserInteractive => Environment.UserInteractive;
+
         /// <summary>
         /// Retrieves the value of an environment variable from the current process or from
         /// the Windows operating system registry key for the current user or local machine.
