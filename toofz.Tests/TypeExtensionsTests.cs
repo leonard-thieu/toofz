@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace toofz.NecroDancer.Leaderboards.Tests
+namespace toofz.Tests
 {
     public class TypeExtensionsTests
     {
