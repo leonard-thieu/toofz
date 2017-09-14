@@ -32,7 +32,7 @@ namespace toofz.Tests
   StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
     toofz.Tests.ExceptionHelper.GetThrownException()";
-                    AssertHelper.NormalizedAreEqual(expected, output);
+                    Assert.That.NormalizedAreEqual(expected, output);
                 }
             }
 
@@ -63,7 +63,7 @@ namespace toofz.Tests
     StackTrace:
       toofz.Tests.ExceptionHelper.ThrowException()
       toofz.Tests.ExceptionHelper.ThrowExceptionWithInnerException()";
-                    AssertHelper.NormalizedAreEqual(expected, output);
+                    Assert.That.NormalizedAreEqual(expected, output);
                 }
             }
         }
@@ -117,7 +117,7 @@ namespace toofz.Tests
 StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
     toofz.Tests.ExceptionHelper.GetThrownException()";
-                    AssertHelper.NormalizedAreEqual(expected, output);
+                    Assert.That.NormalizedAreEqual(expected, output);
                 }
             }
 
@@ -140,7 +140,7 @@ StackTrace:
 StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
     toofz.TestsShared.Record.Exception(Action testCode)";
-                    AssertHelper.NormalizedAreEqual(expected, output);
+                    Assert.That.NormalizedAreEqual(expected, output);
                 }
             }
 

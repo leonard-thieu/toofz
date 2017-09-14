@@ -62,7 +62,7 @@ namespace toofz.Tests
                 var json = JsonConvert.SerializeObject(item);
 
                 // Assert
-                AssertHelper.NormalizedAreEqual(Resources.CategoryItem, json);
+                Assert.That.NormalizedAreEqual(Resources.CategoryItem, json);
             }
 
             [TestMethod]

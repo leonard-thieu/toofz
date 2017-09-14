@@ -266,7 +266,7 @@ namespace toofz.Tests
                 provider.SetPropertyValues(context, values);
 
                 // Assert
-                AssertHelper.NormalizedAreEqual(Resources.BasicConfig, sw.ToString());
+                Assert.That.NormalizedAreEqual(Resources.BasicConfig, sw.ToString());
             }
 
             [TestMethod]
@@ -292,7 +292,7 @@ namespace toofz.Tests
                 provider.SetPropertyValues(context, values);
 
                 // Assert
-                AssertHelper.NormalizedAreEqual(Resources.SerializeAsXmlConfig, sw.ToString());
+                Assert.That.NormalizedAreEqual(Resources.SerializeAsXmlConfig, sw.ToString());
             }
 
             [TestMethod]
@@ -312,7 +312,7 @@ namespace toofz.Tests
                 provider.SetPropertyValues(context, values);
 
                 // Assert
-                AssertHelper.NormalizedAreEqual(Resources.TimeSpanConfig, sw.ToString());
+                Assert.That.NormalizedAreEqual(Resources.TimeSpanConfig, sw.ToString());
             }
         }
 
