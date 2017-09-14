@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "toofz", "toofz\toofz.csproj", "{2E55FDB2-96BB-4C8A-B220-299BE8484593}"
 EndProject
@@ -10,7 +10,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5B785F76-A880-4C92-A703-AC282490D777}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
-		codecov.yml = codecov.yml
 		NuGet.Config = NuGet.Config
 		README.md = README.md
 	EndProjectSection
