@@ -1,12 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.Serialization;
 
 namespace toofz
 {
+    [DataContract]
     public sealed class CategoryItem
     {
-        [JsonProperty("id")]
+        [DataMember(Name = "id")]
         public int Id { get; set; }
-        [JsonProperty("display_name")]
+        [DataMember(Name = "display_name")]
         public string DisplayName { get; set; }
     }
 }

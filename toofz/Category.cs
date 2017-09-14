@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace toofz
 {
+    [DataContract]
     public sealed class Category : Dictionary<string, CategoryItem>
     {
         public string GetName(int id)
