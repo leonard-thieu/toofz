@@ -120,7 +120,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionProgressTests.cs" />
     <Compile Include="CategoriesTests.cs" />
     <Compile Include="CategoryItemTests.cs" />
     <Compile Include="CategoryTests.cs" />
@@ -128,16 +127,16 @@
     <Compile Include="EncryptedSecretTests.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="ExceptionRendererTests.cs" />
-    <Compile Include="MockNotifierBase.cs" />
     <Compile Include="NotifierBaseTests.cs" />
+    <Compile Include="ProgressNotifierBaseTests.cs" />
     <Compile Include="ServiceSettingsProviderTests.cs" />
     <Compile Include="SettingsUtil.cs" />
     <Compile Include="StopwatchAdapterTests.cs" />
     <Compile Include="StoreNotifierTests.cs" />
     <Compile Include="StringExtensionsTests.cs" />
-    <Compile Include="UnthrownException.cs" />
     <Compile Include="TextWriterExtensionsTests.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
+    <Compile Include="UnthrownException.cs" />
     <Compile Include="UpdateNotifierTests.cs" />
     <Compile Include="UtilTests.cs" />
     <Compile Include="XmlSerializable.cs" />

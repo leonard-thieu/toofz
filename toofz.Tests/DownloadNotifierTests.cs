@@ -22,12 +22,11 @@ namespace toofz.Tests
 
                 // Assert
                 Assert.IsInstanceOfType(notifier, typeof(DownloadNotifier));
-                Assert.IsNotNull(notifier.Progress);
             }
         }
 
         [TestClass]
-        public class TotalBytes
+        public class TotalBytesProperty
         {
             [TestMethod]
             public void ReturnsTotalBytes()
@@ -36,8 +35,8 @@ namespace toofz.Tests
                 var mockLog = new Mock<ILog>();
                 var name = "leaderboards";
                 var notifier = new DownloadNotifier(mockLog.Object, name);
-                notifier.Progress.Report(21);
-                notifier.Progress.Report(21);
+                notifier.Report(21);
+                notifier.Report(21);
 
                 // Act
                 var totalBytes = notifier.TotalBytes;
@@ -48,7 +47,27 @@ namespace toofz.Tests
         }
 
         [TestClass]
-        public class Dispose
+        public class ReportMethod
+        {
+            [TestMethod]
+            public void AddsValueToTotalBytes()
+            {
+                // Arrange
+                var log = Mock.Of<ILog>();
+                var name = "myName";
+                var notifier = new DownloadNotifier(log, name);
+
+                // Act
+                notifier.Report(1);
+                notifier.Report(1);
+
+                // Assert
+                Assert.AreEqual(2, notifier.TotalBytes);
+            }
+        }
+
+        [TestClass]
+        public class DisposeMethod
         {
             [TestMethod]
             public void LogsSizeTimeAndRate()
@@ -57,7 +76,7 @@ namespace toofz.Tests
                 var mockLog = new Mock<ILog>();
                 var mockStopwatch = new Mock<IStopwatch>();
                 var notifier = new DownloadNotifier(mockLog.Object, "leaderboards", mockStopwatch.Object);
-                notifier.Progress.Report((long)(26.3).Megabytes().Bytes);
+                notifier.Report((long)(26.3).Megabytes().Bytes);
                 mockStopwatch
                     .SetupGet(stopwatch => stopwatch.Elapsed)
                     .Returns((10.34).Seconds());
@@ -76,7 +95,7 @@ namespace toofz.Tests
                 var mockLog = new Mock<ILog>();
                 var mockStopwatch = new Mock<IStopwatch>();
                 var notifier = new DownloadNotifier(mockLog.Object, "leaderboards", mockStopwatch.Object);
-                notifier.Progress.Report((long)(26.3).Megabytes().Bytes);
+                notifier.Report((long)(26.3).Megabytes().Bytes);
                 mockStopwatch
                     .SetupGet(stopwatch => stopwatch.Elapsed)
                     .Returns((10.34).Seconds());

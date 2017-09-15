@@ -8,7 +8,25 @@ namespace toofz.Tests
     class UpdateNotifierTests
     {
         [TestClass]
-        public class Dispose
+        public class Constructor
+        {
+            [TestMethod]
+            public void ReturnsInstance()
+            {
+                // Arrange
+                var log = Mock.Of<ILog>();
+                var name = "myName";
+
+                // Act
+                var notifier = new UpdateNotifier(log, name);
+
+                // Assert
+                Assert.IsInstanceOfType(notifier, typeof(UpdateNotifier));
+            }
+        }
+
+        [TestClass]
+        public class DisposeMethod
         {
             [TestMethod]
             public void LogsCompletionMessage()

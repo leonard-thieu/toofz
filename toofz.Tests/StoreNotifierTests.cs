@@ -11,7 +11,7 @@ namespace toofz.Tests
         public class Constructor
         {
             [TestMethod]
-            public void SetsProgress()
+            public void ReturnsInstance()
             {
                 // Arrange
                 var mockLog = new Mock<ILog>();
@@ -21,12 +21,52 @@ namespace toofz.Tests
                 var notifier = new StoreNotifier(mockLog.Object, name);
 
                 // Assert
-                Assert.IsNotNull(notifier.Progress);
+                Assert.IsInstanceOfType(notifier, typeof(StoreNotifier));
             }
         }
 
         [TestClass]
-        public class Dispose
+        public class RowsAffectedProperty
+        {
+            [TestMethod]
+            public void ReturnsRowsAffected()
+            {
+                // Arrange
+                var log = Mock.Of<ILog>();
+                var name = "myName";
+                var notifier = new StoreNotifier(log, name);
+                notifier.Report(20);
+
+                // Act
+                var rowsAffected = notifier.RowsAffected;
+
+                // Assert
+                Assert.AreEqual(20, rowsAffected);
+            }
+        }
+
+        [TestClass]
+        public class ReportMethod
+        {
+            [TestMethod]
+            public void AddsValueToRowsAffected()
+            {
+                // Arrange
+                var log = Mock.Of<ILog>();
+                var name = "myName";
+                var notifier = new StoreNotifier(log, name);
+
+                // Act
+                notifier.Report(1);
+                notifier.Report(1);
+
+                // Assert
+                Assert.AreEqual(2, notifier.RowsAffected);
+            }
+        }
+
+        [TestClass]
+        public class DisposeMethod
         {
             [TestMethod]
             public void LogsCompletionMessage()
@@ -36,7 +76,7 @@ namespace toofz.Tests
                 var name = "entries";
                 var mockStopwatch = new Mock<IStopwatch>();
                 var notifier = new StoreNotifier(mockLog.Object, name, mockStopwatch.Object);
-                notifier.Progress.Report(759225);
+                notifier.Report(759225);
                 mockStopwatch
                     .SetupGet(stopwatch => stopwatch.Elapsed)
                     .Returns((6.42).Seconds());
@@ -56,7 +96,7 @@ namespace toofz.Tests
                 var name = "entries";
                 var mockStopwatch = new Mock<IStopwatch>();
                 var notifier = new StoreNotifier(mockLog.Object, name, mockStopwatch.Object);
-                notifier.Progress.Report(759225);
+                notifier.Report(759225);
                 mockStopwatch
                     .SetupGet(stopwatch => stopwatch.Elapsed)
                     .Returns((6.42).Seconds());

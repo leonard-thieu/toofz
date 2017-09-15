@@ -15,13 +15,14 @@ namespace toofz.Tests
             {
                 // Arrange
                 string category = null;
-                var mockLog = new Mock<ILog>();
+                var log = Mock.Of<ILog>();
                 var name = "myName";
+                var stopwatch = Mock.Of<IStopwatch>();
 
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentNullException>(() =>
                 {
-                    new MockNotifierBase(category, mockLog.Object, name);
+                    new NotifierBaseAdapter(category, log, name, stopwatch);
                 });
             }
 
@@ -32,11 +33,12 @@ namespace toofz.Tests
                 var category = "myCategory";
                 ILog log = null;
                 var name = "myName";
+                var stopwatch = Mock.Of<IStopwatch>();
 
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentNullException>(() =>
                 {
-                    new MockNotifierBase(category, log, name);
+                    new NotifierBaseAdapter(category, log, name, stopwatch);
                 });
             }
 
@@ -45,14 +47,31 @@ namespace toofz.Tests
             {
                 // Arrange
                 var category = "myCategory";
-                var mockLog = new Mock<ILog>();
+                var log = Mock.Of<ILog>();
                 string name = null;
+                var stopwatch = Mock.Of<IStopwatch>();
 
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentNullException>(() =>
                 {
-                    new MockNotifierBase(category, mockLog.Object, name);
+                    new NotifierBaseAdapter(category, log, name, stopwatch);
                 });
+            }
+
+            [TestMethod]
+            public void StopwatchIsNull_SetsStopwatchToStopwatchAdapter()
+            {
+                // Arrange
+                var category = "myCategory";
+                var log = Mock.Of<ILog>();
+                var name = "myName";
+                IStopwatch stopwatch = null;
+
+                // Act
+                var notifier = new NotifierBaseAdapter(category, log, name, stopwatch);
+
+                // Assert
+                Assert.IsInstanceOfType(notifier.Stopwatch, typeof(StopwatchAdapter));
             }
 
             [TestMethod]
@@ -60,11 +79,12 @@ namespace toofz.Tests
             {
                 // Arrange
                 var category = "myCategory";
-                var mockLog = new Mock<ILog>();
+                var log = Mock.Of<ILog>();
                 var name = "myName";
+                var stopwatch = Mock.Of<IStopwatch>();
 
                 // Act
-                var notifier = new MockNotifierBase(category, mockLog.Object, name);
+                var notifier = new NotifierBaseAdapter(category, log, name, stopwatch);
 
                 // Assert
                 Assert.IsInstanceOfType(notifier, typeof(NotifierBase));
@@ -76,18 +96,20 @@ namespace toofz.Tests
                 // Arrange
                 var category = "myCategory";
                 var mockLog = new Mock<ILog>();
+                var log = mockLog.Object;
                 var name = "myName";
+                var stopwatch = Mock.Of<IStopwatch>();
 
                 // Act
-                var notifier = new MockNotifierBase(category, mockLog.Object, name);
+                var notifier = new NotifierBaseAdapter(category, log, name, stopwatch);
 
                 // Assert
-                mockLog.Verify(log => log.Debug("Start myCategory myName"));
+                mockLog.Verify(l => l.Debug("Start myCategory myName"));
             }
         }
 
         [TestClass]
-        public class Dispose
+        public class DisposeMethod
         {
             [TestMethod]
             public void LogsEndMessage()
@@ -95,14 +117,16 @@ namespace toofz.Tests
                 // Arrange
                 var category = "myCategory";
                 var mockLog = new Mock<ILog>();
+                var log = mockLog.Object;
                 var name = "myName";
-                var notifier = new MockNotifierBase(category, mockLog.Object, name);
+                var stopwatch = Mock.Of<IStopwatch>();
+                var notifier = new NotifierBaseAdapter(category, log, name, stopwatch);
 
                 // Act
                 notifier.Dispose();
 
                 // Assert
-                mockLog.Verify(log => log.Debug("End myCategory myName"));
+                mockLog.Verify(l => l.Debug("End myCategory myName"));
             }
 
             [TestMethod]
@@ -111,16 +135,23 @@ namespace toofz.Tests
                 // Arrange
                 var category = "myCategory";
                 var mockLog = new Mock<ILog>();
+                var log = mockLog.Object;
                 var name = "myName";
-                var notifier = new MockNotifierBase(category, mockLog.Object, name);
+                var stopwatch = Mock.Of<IStopwatch>();
+                var notifier = new NotifierBaseAdapter(category, log, name, stopwatch);
 
                 // Act
                 notifier.Dispose();
                 notifier.Dispose();
 
                 // Assert
-                mockLog.Verify(log => log.Debug("End myCategory myName"), Times.Once);
+                mockLog.Verify(l => l.Debug("End myCategory myName"), Times.Once);
             }
+        }
+
+        class NotifierBaseAdapter : NotifierBase
+        {
+            public NotifierBaseAdapter(string category, ILog log, string name, IStopwatch stopwatch) : base(category, log, name, stopwatch) { }
         }
     }
 }

@@ -5,29 +5,24 @@ namespace toofz
 {
     public sealed class UpdateNotifier : NotifierBase
     {
-        public UpdateNotifier(ILog log, string name, IStopwatch stopwatch = null) :
-            base("Update", log, name, stopwatch)
-        {
+        public UpdateNotifier(ILog log, string name) : this(log, name, null) { }
 
-        }
+        internal UpdateNotifier(ILog log, string name, IStopwatch stopwatch) : base("Update", log, name, stopwatch) { }
 
         #region IDisposable Members
 
         bool disposed;
 
-        protected override void Dispose(bool disposing)
+        public override void Dispose()
         {
             if (disposed)
                 return;
 
-            if (disposing)
-            {
-                var duration = Stopwatch.Elapsed.TotalSeconds.ToString("F1", CultureInfo.CurrentCulture);
-                Log.Info($"{Category} {Name} complete after {duration} s.");
-            }
+            var duration = Stopwatch.Elapsed.TotalSeconds.ToString("F1", CultureInfo.CurrentCulture);
+            Log.Info($"{Category} {Name} complete after {duration} s.");
 
             disposed = true;
-            base.Dispose(disposing);
+            base.Dispose();
         }
 
         #endregion
