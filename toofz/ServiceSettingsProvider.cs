@@ -39,7 +39,7 @@ namespace toofz
         /// Gets or sets a factory function that returns an instance of <see cref="TextReader"/> which is used to read settings.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        /// value cannot be null.
+        /// value is null.
         /// </exception>
         public Func<TextReader> GetSettingsReader
         {
@@ -52,7 +52,7 @@ namespace toofz
         /// Gets or sets a factory function that returns an instance of <see cref="TextWriter"/> which is used to write settings.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        /// value cannot be null.
+        /// value is null.
         /// </exception>
         public Func<TextWriter> GetSettingsWriter
         {
@@ -65,7 +65,7 @@ namespace toofz
         /// Gets or sets the name of the currently running application.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        /// value cannot be null.
+        /// value is null.
         /// </exception>
         public override string ApplicationName
         {

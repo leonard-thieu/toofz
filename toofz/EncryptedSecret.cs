@@ -37,7 +37,8 @@ namespace toofz
         /// Initializes an instance of the <see cref="EncryptedSecret"/> class.
         /// </summary>
         /// <param name="secret">The secret to encrypt.</param>
-        /// <exception cref="System.ArgumentException">
+        /// <param name="iterations">The number of iterations used to derive the key.</param>
+        /// <exception cref="ArgumentException">
         /// <paramref name="secret"/> cannot be null or empty.
         /// </exception>
         public EncryptedSecret(string secret, int iterations)
