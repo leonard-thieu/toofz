@@ -1,10 +1,11 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Runtime.CompilerServices;
 
 namespace toofz.Tests
 {
     static class ExceptionHelper
     {
+        [MethodImpl(MethodImplOptions.NoInlining)]
         static void ThrowException()
         {
             throw new Exception("Thrown test exception");
