@@ -1,4 +1,5 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.IO;
 using log4net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,7 +11,7 @@ namespace toofz.Tests
     class ExceptionRendererTests
     {
         [TestClass]
-        public class RenderObject
+        public class RenderObjectMethod
         {
             [TestMethod]
             public void RendersException()
@@ -69,7 +70,55 @@ namespace toofz.Tests
         }
 
         [TestClass]
-        public class RenderStackTrace
+        public class FlattenExceptionMethod
+        {
+            [TestMethod]
+            public void ExIsAggregateExceptionAndHasMultipleInnerExceptions_ReturnsFlattenedException()
+            {
+                // Arrange
+                var inner1 = new Exception();
+                var inner2 = new Exception();
+                var aggr = new AggregateException(inner1, inner2);
+
+                // Act
+                var ex = ExceptionRenderer.FlattenException(aggr);
+
+                // Assert
+                Assert.IsInstanceOfType(ex, typeof(AggregateException));
+                var aggr2 = (AggregateException)ex;
+                Assert.IsTrue(aggr2.InnerExceptions.Count > 1);
+            }
+
+            [TestMethod]
+            public void ExIsAggregateException_ReturnsInnerException()
+            {
+                // Arrange
+                var inner = new Exception();
+                var aggr = new AggregateException(inner);
+
+                // Act
+                var ex = ExceptionRenderer.FlattenException(aggr);
+
+                // Assert
+                Assert.AreSame(inner, ex);
+            }
+
+            [TestMethod]
+            public void ExIsNotAggregateException_ReturnsEx()
+            {
+                // Arrange
+                var ex = new Exception();
+
+                // Act
+                var ex2 = ExceptionRenderer.FlattenException(ex);
+
+                // Assert
+                Assert.AreSame(ex, ex2);
+            }
+        }
+
+        [TestClass]
+        public class RenderStackTraceMethod
         {
             [TestMethod]
             public void StackTraceIsNull_DoesNotThrowNullReferenceException()

@@ -90,6 +90,20 @@ namespace toofz
             }
         }
 
+        internal static Exception FlattenException(Exception ex)
+        {
+            var aggr = ex as AggregateException;
+            if (aggr != null)
+            {
+                var flattened = aggr.Flatten();
+                ex = flattened.InnerExceptions.Count == 1 ?
+                    flattened.InnerException :
+                    flattened;
+            }
+
+            return ex;
+        }
+
         internal static void RenderStackTrace(
             string stackTrace,
             IndentedTextWriter indentedWriter,
