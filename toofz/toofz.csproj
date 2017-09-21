@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Categories.cs" />
+    <Compile Include="CategoriesEnvelope.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="CategoryItem.cs" />
     <Compile Include="DownloadNotifier.cs" />

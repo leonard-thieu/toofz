@@ -74,8 +74,8 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="toofz.TestsShared, Version=3.0.0.76, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\toofz.TestsShared.3.0.0\lib\net45\toofz.TestsShared.dll</HintPath>
+    <Reference Include="toofz.TestsShared, Version=4.0.0.81, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\toofz.TestsShared.4.0.0\lib\net45\toofz.TestsShared.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -85,15 +85,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <None Include="Properties\TestSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>TestSettings.Designer.cs</LastGenOutput>
@@ -106,12 +97,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>TestSettings.settings</DependentUpon>
     </Compile>
-    <None Include="Resources\Basic.config" />
-    <None Include="Resources\Categories.json" />
-    <None Include="Resources\Category.json" />
-    <None Include="Resources\CategoryItem.json" />
-    <None Include="Resources\SerializeAsXml.config" />
-    <None Include="Resources\TimeSpan.config" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -120,6 +105,35 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Resources\BasicConfig.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\Categories.json" />
+    <None Include="Resources\CategoriesEnvelope.json" />
+    <None Include="Resources\CategoriesEnvelopeWithoutCategories.json" />
+    <None Include="Resources\Category.json" />
+    <None Include="Resources\CategoryItemWithoutDisplayName.json" />
+    <None Include="Resources\CategoryItemWithoutId.json" />
+    <None Include="Resources\CategoryItem.json" />
+    <None Include="Resources\SerializeAsXmlConfig.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\TimeSpanConfig.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CategoriesEnvelopeTests.cs" />
     <Compile Include="CategoriesTests.cs" />
     <Compile Include="CategoryItemTests.cs" />
     <Compile Include="CategoryTests.cs" />

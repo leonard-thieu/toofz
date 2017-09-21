@@ -78,7 +78,14 @@ namespace toofz.Tests.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {&quot;myCategory&quot;:{&quot;myItem&quot;:{&quot;id&quot;:12,&quot;display_name&quot;:&quot;My Display Name&quot;}}}.
+        ///   Looks up a localized string similar to {
+        ///  &quot;myCategory&quot;: {
+        ///    &quot;myItem&quot;: {
+        ///      &quot;id&quot;: 12,
+        ///      &quot;display_name&quot;: &quot;My Display Name&quot;
+        ///    }
+        ///  }
+        ///}.
         /// </summary>
         internal static string Categories {
             get {
@@ -87,7 +94,50 @@ namespace toofz.Tests.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {&quot;myItem&quot;:{&quot;id&quot;:10,&quot;display_name&quot;:&quot;myDisplayName&quot;}}.
+        ///   Looks up a localized string similar to {
+        ///  &quot;categories&quot;: [
+        ///    &quot;myCategory&quot;,
+        ///    {
+        ///      &quot;myItem&quot;: {
+        ///        &quot;id&quot;: 12,
+        ///        &quot;display_name&quot;: &quot;My Display Name&quot;
+        ///      }
+        ///    }
+        ///  ]
+        ///}.
+        /// </summary>
+        internal static string CategoriesEnvelope {
+            get {
+                return ResourceManager.GetString("CategoriesEnvelope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;categories&quot;: [
+        ///    &quot;myCategory&quot;,
+        ///    {
+        ///      &quot;myItem&quot;: {
+        ///        &quot;id&quot;: 12,
+        ///        &quot;display_name&quot;: &quot;My Display Name&quot;
+        ///      }
+        ///    }
+        ///  ]
+        ///}.
+        /// </summary>
+        internal static string CategoriesEnvelopeWithoutCategories {
+            get {
+                return ResourceManager.GetString("CategoriesEnvelopeWithoutCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;myItem&quot;: {
+        ///    &quot;id&quot;: 10,
+        ///    &quot;display_name&quot;: &quot;myDisplayName&quot;
+        ///  }
+        ///}.
         /// </summary>
         internal static string Category {
             get {
@@ -96,11 +146,36 @@ namespace toofz.Tests.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {&quot;id&quot;:10,&quot;display_name&quot;:&quot;myDisplayName&quot;}.
+        ///   Looks up a localized string similar to {
+        ///  &quot;id&quot;: 10,
+        ///  &quot;display_name&quot;: &quot;myDisplayName&quot;
+        ///}.
         /// </summary>
         internal static string CategoryItem {
             get {
                 return ResourceManager.GetString("CategoryItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;id&quot;: 10
+        ///}.
+        /// </summary>
+        internal static string CategoryItemWithoutDisplayName {
+            get {
+                return ResourceManager.GetString("CategoryItemWithoutDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;display_name&quot;: &quot;myDisplayName&quot;
+        ///}.
+        /// </summary>
+        internal static string CategoryItemWithoutId {
+            get {
+                return ResourceManager.GetString("CategoryItemWithoutId", resourceCulture);
             }
         }
         

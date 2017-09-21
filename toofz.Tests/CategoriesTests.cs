@@ -33,7 +33,7 @@ namespace toofz.Tests
                 };
 
                 // Act
-                var json = JsonConvert.SerializeObject(categories);
+                var json = JsonConvert.SerializeObject(categories, Formatting.Indented);
 
                 // Assert
                 Assert.That.NormalizedAreEqual(Resources.Categories, json);
@@ -49,12 +49,7 @@ namespace toofz.Tests
                 var categories = JsonConvert.DeserializeObject<Categories>(json);
 
                 // Assert
-                var categoryExists = categories.TryGetValue("myCategory", out var category);
-                Assert.IsTrue(categoryExists);
-                var itemExists = category.TryGetValue("myItem", out var item);
-                Assert.IsTrue(itemExists);
-                Assert.AreEqual(12, item.Id);
-                Assert.AreEqual("My Display Name", item.DisplayName);
+                Assert.IsInstanceOfType(categories, typeof(Categories));
             }
         }
     }

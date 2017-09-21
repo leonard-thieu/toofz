@@ -5,9 +5,9 @@ namespace toofz
     [DataContract]
     public sealed class CategoryItem
     {
-        [DataMember(Name = "id")]
+        [DataMember(Name = "id", IsRequired = true)]
         public int Id { get; set; }
-        [DataMember(Name = "display_name")]
+        [DataMember(Name = "display_name", IsRequired = true)]
         public string DisplayName { get; set; }
     }
 }

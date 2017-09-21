@@ -59,10 +59,36 @@ namespace toofz.Tests
                 };
 
                 // Act
-                var json = JsonConvert.SerializeObject(item);
+                var json = JsonConvert.SerializeObject(item, Formatting.Indented);
 
                 // Assert
                 Assert.That.NormalizedAreEqual(Resources.CategoryItem, json);
+            }
+
+            [TestMethod]
+            public void WithoutId_DoesNotDeserialize()
+            {
+                // Arrange
+                var json = Resources.CategoryItemWithoutId;
+
+                // Act -> Assert
+                Assert.ThrowsException<JsonSerializationException>(() =>
+                {
+                    JsonConvert.DeserializeObject<CategoryItem>(json);
+                });
+            }
+
+            [TestMethod]
+            public void WithoutDisplayName_DoesNotDeserialize()
+            {
+                // Arrange
+                var json = Resources.CategoryItemWithoutDisplayName;
+
+                // Act -> Assert
+                Assert.ThrowsException<JsonSerializationException>(() =>
+                {
+                    JsonConvert.DeserializeObject<CategoryItem>(json);
+                });
             }
 
             [TestMethod]
@@ -72,11 +98,12 @@ namespace toofz.Tests
                 var json = Resources.CategoryItem;
 
                 // Act
-                var item = JsonConvert.DeserializeObject<CategoryItem>(json);
+                var categoryItem = JsonConvert.DeserializeObject<CategoryItem>(json);
 
                 // Assert
-                Assert.AreEqual(10, item.Id);
-                Assert.AreEqual("myDisplayName", item.DisplayName);
+                Assert.IsInstanceOfType(categoryItem, typeof(CategoryItem));
+                Assert.AreEqual(10, categoryItem.Id);
+                Assert.AreEqual("myDisplayName", categoryItem.DisplayName);
             }
         }
     }

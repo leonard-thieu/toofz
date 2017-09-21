@@ -9,7 +9,7 @@ namespace toofz.Tests
     class CategoryTests
     {
         [TestClass]
-        public class GetName
+        public class GetNameMethod
         {
             [TestMethod]
             public void ItemWithIdIsNotInCategory_ThrowsArgumentException()
@@ -44,7 +44,7 @@ namespace toofz.Tests
         }
 
         [TestClass]
-        public class GetNamesAsCommaSeparatedValues
+        public class GetNamesAsCommaSeparatedValuesMethod
         {
             [TestMethod]
             public void ReturnsNamesAsCommaSeparatedValues()
@@ -84,7 +84,7 @@ namespace toofz.Tests
                 };
 
                 // Act
-                var json = JsonConvert.SerializeObject(category);
+                var json = JsonConvert.SerializeObject(category, Formatting.Indented);
 
                 // Assert
                 Assert.That.NormalizedAreEqual(Resources.Category, json);
@@ -100,8 +100,7 @@ namespace toofz.Tests
                 var category = JsonConvert.DeserializeObject<Category>(json);
 
                 // Assert
-                var success = category.TryGetValue("myItem", out var item);
-                Assert.IsTrue(success);
+                Assert.IsInstanceOfType(category, typeof(Category));
             }
         }
     }

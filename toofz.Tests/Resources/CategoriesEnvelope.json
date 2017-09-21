@@ -1,0 +1,17 @@
+{
+  "categories": {
+    "products": {
+      "classic": {
+        "id": 0,
+        "display_name": "Classic",
+        "order": 0
+      },
+      "amplified": {
+        "id": 1,
+        "display_name": "Amplified",
+        "order": 1,
+        "value": true
+      }
+    }
+  }
+}
