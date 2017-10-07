@@ -53,10 +53,6 @@
     <None Include="toofz.nuspec" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Categories.cs" />
-    <Compile Include="CategoriesEnvelope.cs" />
-    <Compile Include="Category.cs" />
-    <Compile Include="CategoryItem.cs" />
     <Compile Include="DownloadNotifier.cs" />
     <Compile Include="EncryptedSecret.cs" />
     <Compile Include="ExceptionRenderer.cs" />
@@ -72,11 +68,9 @@
     <Compile Include="ProgressNotifierBase.cs" />
     <Compile Include="ServiceSettingsProvider.cs" />
     <Compile Include="StoreNotifier.cs" />
-    <Compile Include="StringExtensions.cs" />
     <Compile Include="TextWriterExtensions.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="UpdateNotifier.cs" />
-    <Compile Include="Util.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

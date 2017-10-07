@@ -118,13 +118,6 @@
     <None Include="Resources\BasicConfig.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Resources\Categories.json" />
-    <None Include="Resources\CategoriesEnvelope.json" />
-    <None Include="Resources\CategoriesEnvelopeWithoutCategories.json" />
-    <None Include="Resources\Category.json" />
-    <None Include="Resources\CategoryItemWithoutDisplayName.json" />
-    <None Include="Resources\CategoryItemWithoutId.json" />
-    <None Include="Resources\CategoryItem.json" />
     <None Include="Resources\SerializeAsXmlConfig.config">
       <SubType>Designer</SubType>
     </None>
@@ -133,10 +126,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CategoriesEnvelopeTests.cs" />
-    <Compile Include="CategoriesTests.cs" />
-    <Compile Include="CategoryItemTests.cs" />
-    <Compile Include="CategoryTests.cs" />
     <Compile Include="DownloadNotifierTests.cs" />
     <Compile Include="EncryptedSecretTests.cs" />
     <Compile Include="ExceptionHelper.cs" />
@@ -147,12 +136,10 @@
     <Compile Include="SettingsUtil.cs" />
     <Compile Include="StopwatchAdapterTests.cs" />
     <Compile Include="StoreNotifierTests.cs" />
-    <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="TextWriterExtensionsTests.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
     <Compile Include="UnthrownException.cs" />
     <Compile Include="UpdateNotifierTests.cs" />
-    <Compile Include="UtilTests.cs" />
     <Compile Include="XmlSerializable.cs" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

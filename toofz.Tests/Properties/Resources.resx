@@ -121,27 +121,6 @@
   <data name="BasicConfig" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BasicConfig.config;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
   </data>
-  <data name="Categories" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Categories.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="CategoriesEnvelope" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CategoriesEnvelope.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="CategoriesEnvelopeWithoutCategories" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CategoriesEnvelopeWithoutCategories.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="Category" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Category.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="CategoryItem" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CategoryItem.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="CategoryItemWithoutDisplayName" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CategoryItemWithoutDisplayName.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="CategoryItemWithoutId" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CategoryItemWithoutId.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="SerializeAsXmlConfig" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SerializeAsXmlConfig.config;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
