@@ -50,7 +50,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="toofz.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityBase.cs" />
