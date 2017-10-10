@@ -4,11 +4,11 @@ using log4net;
 
 namespace toofz
 {
-    public sealed class DownloadNotifier : ProgressNotifierBase<long>
+    public sealed class DownloadActivity : ProgressActivityBase<long>
     {
-        public DownloadNotifier(ILog log, string name) : this(log, name, null) { }
+        public DownloadActivity(ILog log, string name) : this(log, name, null) { }
 
-        internal DownloadNotifier(ILog log, string name, IStopwatch stopwatch) : base("Download", log, name, stopwatch) { }
+        internal DownloadActivity(ILog log, string name, IStopwatch stopwatch) : base("Download", log, name, stopwatch) { }
 
         long totalBytes;
 

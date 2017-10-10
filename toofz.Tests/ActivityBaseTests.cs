@@ -5,7 +5,7 @@ using Moq;
 
 namespace toofz.Tests
 {
-    class NotifierBaseTests
+    class ActivityBaseTests
     {
         [TestClass]
         public class Constructor
@@ -22,7 +22,7 @@ namespace toofz.Tests
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentNullException>(() =>
                 {
-                    new NotifierBaseAdapter(category, log, name, stopwatch);
+                    new ActivityBaseAdapter(category, log, name, stopwatch);
                 });
             }
 
@@ -38,7 +38,7 @@ namespace toofz.Tests
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentNullException>(() =>
                 {
-                    new NotifierBaseAdapter(category, log, name, stopwatch);
+                    new ActivityBaseAdapter(category, log, name, stopwatch);
                 });
             }
 
@@ -54,7 +54,7 @@ namespace toofz.Tests
                 // Act -> Assert
                 Assert.ThrowsException<ArgumentNullException>(() =>
                 {
-                    new NotifierBaseAdapter(category, log, name, stopwatch);
+                    new ActivityBaseAdapter(category, log, name, stopwatch);
                 });
             }
 
@@ -68,10 +68,10 @@ namespace toofz.Tests
                 IStopwatch stopwatch = null;
 
                 // Act
-                var notifier = new NotifierBaseAdapter(category, log, name, stopwatch);
+                var activity = new ActivityBaseAdapter(category, log, name, stopwatch);
 
                 // Assert
-                Assert.IsInstanceOfType(notifier.Stopwatch, typeof(StopwatchAdapter));
+                Assert.IsInstanceOfType(activity.Stopwatch, typeof(StopwatchAdapter));
             }
 
             [TestMethod]
@@ -84,10 +84,10 @@ namespace toofz.Tests
                 var stopwatch = Mock.Of<IStopwatch>();
 
                 // Act
-                var notifier = new NotifierBaseAdapter(category, log, name, stopwatch);
+                var activity = new ActivityBaseAdapter(category, log, name, stopwatch);
 
                 // Assert
-                Assert.IsInstanceOfType(notifier, typeof(NotifierBase));
+                Assert.IsInstanceOfType(activity, typeof(ActivityBase));
             }
 
             [TestMethod]
@@ -101,7 +101,7 @@ namespace toofz.Tests
                 var stopwatch = Mock.Of<IStopwatch>();
 
                 // Act
-                var notifier = new NotifierBaseAdapter(category, log, name, stopwatch);
+                var activity = new ActivityBaseAdapter(category, log, name, stopwatch);
 
                 // Assert
                 mockLog.Verify(l => l.Debug("Start myCategory myName"));
@@ -120,10 +120,10 @@ namespace toofz.Tests
                 var log = mockLog.Object;
                 var name = "myName";
                 var stopwatch = Mock.Of<IStopwatch>();
-                var notifier = new NotifierBaseAdapter(category, log, name, stopwatch);
+                var activity = new ActivityBaseAdapter(category, log, name, stopwatch);
 
                 // Act
-                notifier.Dispose();
+                activity.Dispose();
 
                 // Assert
                 mockLog.Verify(l => l.Debug("End myCategory myName"));
@@ -138,20 +138,20 @@ namespace toofz.Tests
                 var log = mockLog.Object;
                 var name = "myName";
                 var stopwatch = Mock.Of<IStopwatch>();
-                var notifier = new NotifierBaseAdapter(category, log, name, stopwatch);
+                var activity = new ActivityBaseAdapter(category, log, name, stopwatch);
 
                 // Act
-                notifier.Dispose();
-                notifier.Dispose();
+                activity.Dispose();
+                activity.Dispose();
 
                 // Assert
                 mockLog.Verify(l => l.Debug("End myCategory myName"), Times.Once);
             }
         }
 
-        class NotifierBaseAdapter : NotifierBase
+        class ActivityBaseAdapter : ActivityBase
         {
-            public NotifierBaseAdapter(string category, ILog log, string name, IStopwatch stopwatch) : base(category, log, name, stopwatch) { }
+            public ActivityBaseAdapter(string category, ILog log, string name, IStopwatch stopwatch) : base(category, log, name, stopwatch) { }
         }
     }
 }

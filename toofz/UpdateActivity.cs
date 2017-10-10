@@ -3,11 +3,11 @@ using log4net;
 
 namespace toofz
 {
-    public sealed class UpdateNotifier : NotifierBase
+    public sealed class UpdateActivity : ActivityBase
     {
-        public UpdateNotifier(ILog log, string name) : this(log, name, null) { }
+        public UpdateActivity(ILog log, string name) : this(log, name, null) { }
 
-        internal UpdateNotifier(ILog log, string name, IStopwatch stopwatch) : base("Update", log, name, stopwatch) { }
+        internal UpdateActivity(ILog log, string name, IStopwatch stopwatch) : base("Update", log, name, stopwatch) { }
 
         #region IDisposable Members
 

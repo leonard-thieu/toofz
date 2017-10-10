@@ -53,7 +53,8 @@
     <None Include="toofz.nuspec" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DownloadNotifier.cs" />
+    <Compile Include="ActivityBase.cs" />
+    <Compile Include="DownloadActivity.cs" />
     <Compile Include="EncryptedSecret.cs" />
     <Compile Include="ExceptionRenderer.cs" />
     <Compile Include="IEnvironment.cs" />
@@ -64,13 +65,12 @@
     <Compile Include="StopwatchAdapter.cs">
       <DependentUpon>IStopwatch.cs</DependentUpon>
     </Compile>
-    <Compile Include="NotifierBase.cs" />
-    <Compile Include="ProgressNotifierBase.cs" />
+    <Compile Include="ProgressActivityBase.cs" />
     <Compile Include="ServiceSettingsProvider.cs" />
-    <Compile Include="StoreNotifier.cs" />
+    <Compile Include="StoreActivity.cs" />
     <Compile Include="TextWriterExtensions.cs" />
     <Compile Include="TypeExtensions.cs" />
-    <Compile Include="UpdateNotifier.cs" />
+    <Compile Include="UpdateActivity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

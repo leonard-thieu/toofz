@@ -5,7 +5,7 @@ using Moq;
 
 namespace toofz.Tests
 {
-    class UpdateNotifierTests
+    class UpdateActivityTests
     {
         [TestClass]
         public class Constructor
@@ -18,10 +18,10 @@ namespace toofz.Tests
                 var name = "myName";
 
                 // Act
-                var notifier = new UpdateNotifier(log, name);
+                var activity = new UpdateActivity(log, name);
 
                 // Assert
-                Assert.IsInstanceOfType(notifier, typeof(UpdateNotifier));
+                Assert.IsInstanceOfType(activity, typeof(UpdateActivity));
             }
         }
 
@@ -33,18 +33,18 @@ namespace toofz.Tests
             {
                 // Arrange
                 var mockLog = new Mock<ILog>();
+                var log = mockLog.Object;
                 var name = "daily leaderboards";
                 var mockStopwatch = new Mock<IStopwatch>();
-                var notifier = new UpdateNotifier(mockLog.Object, name, mockStopwatch.Object);
-                mockStopwatch
-                    .SetupGet(stopwatch => stopwatch.Elapsed)
-                    .Returns((13.2).Seconds());
+                var stopwatch = mockStopwatch.Object;
+                var activity = new UpdateActivity(log, name, stopwatch);
+                mockStopwatch.SetupGet(s => s.Elapsed).Returns((13.2).Seconds());
 
                 // Act
-                notifier.Dispose();
+                activity.Dispose();
 
                 // Assert
-                mockLog.Verify(log => log.Info("Update daily leaderboards complete after 13.2 s."));
+                mockLog.Verify(l => l.Info("Update daily leaderboards complete after 13.2 s."));
             }
 
             [TestMethod]
@@ -52,19 +52,19 @@ namespace toofz.Tests
             {
                 // Arrange
                 var mockLog = new Mock<ILog>();
+                var log = mockLog.Object;
                 var name = "daily leaderboards";
                 var mockStopwatch = new Mock<IStopwatch>();
-                var notifier = new UpdateNotifier(mockLog.Object, name, mockStopwatch.Object);
-                mockStopwatch
-                    .SetupGet(stopwatch => stopwatch.Elapsed)
-                    .Returns((13.2).Seconds());
+                var stopwatch = mockStopwatch.Object;
+                var activity = new UpdateActivity(log, name, stopwatch);
+                mockStopwatch.SetupGet(s => s.Elapsed).Returns((13.2).Seconds());
 
                 // Act
-                notifier.Dispose();
-                notifier.Dispose();
+                activity.Dispose();
+                activity.Dispose();
 
                 // Assert
-                mockLog.Verify(log => log.Info("Update daily leaderboards complete after 13.2 s."), Times.Once);
+                mockLog.Verify(l => l.Info("Update daily leaderboards complete after 13.2 s."), Times.Once);
             }
         }
     }

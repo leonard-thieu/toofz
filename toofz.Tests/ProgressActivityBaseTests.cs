@@ -5,7 +5,7 @@ using Moq;
 
 namespace toofz.Tests
 {
-    class ProgressNotifierBaseTests
+    class ProgressActivityBaseTests
     {
         [TestClass]
         public class Constructor
@@ -20,16 +20,16 @@ namespace toofz.Tests
                 var stopwatch = Mock.Of<IStopwatch>();
 
                 // Act
-                var notifier = new ProgressNotifierBaseAdapter(category, log, name, stopwatch);
+                var activity = new ProgressActivityBaseAdapter(category, log, name, stopwatch);
 
                 // Assert
-                Assert.IsInstanceOfType(notifier, typeof(ProgressNotifierBase<int>));
+                Assert.IsInstanceOfType(activity, typeof(ProgressActivityBase<int>));
             }
         }
 
-        class ProgressNotifierBaseAdapter : ProgressNotifierBase<int>
+        class ProgressActivityBaseAdapter : ProgressActivityBase<int>
         {
-            internal ProgressNotifierBaseAdapter(string category, ILog log, string name, IStopwatch stopwatch) : base(category, log, name, stopwatch) { }
+            internal ProgressActivityBaseAdapter(string category, ILog log, string name, IStopwatch stopwatch) : base(category, log, name, stopwatch) { }
 
             public override void Report(int value) => throw new NotImplementedException();
         }

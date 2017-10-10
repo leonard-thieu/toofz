@@ -3,9 +3,9 @@ using log4net;
 
 namespace toofz
 {
-    public abstract class NotifierBase : IDisposable
+    public abstract class ActivityBase : IDisposable
     {
-        internal NotifierBase(string category, ILog log, string name, IStopwatch stopwatch)
+        internal ActivityBase(string category, ILog log, string name, IStopwatch stopwatch)
         {
             Category = category ?? throw new ArgumentNullException(nameof(category));
             Log = log ?? throw new ArgumentNullException(nameof(log));

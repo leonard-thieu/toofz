@@ -5,7 +5,7 @@ using Moq;
 
 namespace toofz.Tests
 {
-    class StoreNotifierTests
+    class StoreActivityTests
     {
         [TestClass]
         public class Constructor
@@ -14,14 +14,14 @@ namespace toofz.Tests
             public void ReturnsInstance()
             {
                 // Arrange
-                var mockLog = new Mock<ILog>();
+                var log = Mock.Of<ILog>();
                 var name = "myName";
 
                 // Act
-                var notifier = new StoreNotifier(mockLog.Object, name);
+                var activity = new StoreActivity(log, name);
 
                 // Assert
-                Assert.IsInstanceOfType(notifier, typeof(StoreNotifier));
+                Assert.IsInstanceOfType(activity, typeof(StoreActivity));
             }
         }
 
@@ -34,11 +34,11 @@ namespace toofz.Tests
                 // Arrange
                 var log = Mock.Of<ILog>();
                 var name = "myName";
-                var notifier = new StoreNotifier(log, name);
-                notifier.Report(20);
+                var activity = new StoreActivity(log, name);
+                activity.Report(20);
 
                 // Act
-                var rowsAffected = notifier.RowsAffected;
+                var rowsAffected = activity.RowsAffected;
 
                 // Assert
                 Assert.AreEqual(20, rowsAffected);
@@ -54,14 +54,14 @@ namespace toofz.Tests
                 // Arrange
                 var log = Mock.Of<ILog>();
                 var name = "myName";
-                var notifier = new StoreNotifier(log, name);
+                var activity = new StoreActivity(log, name);
 
                 // Act
-                notifier.Report(1);
-                notifier.Report(1);
+                activity.Report(1);
+                activity.Report(1);
 
                 // Assert
-                Assert.AreEqual(2, notifier.RowsAffected);
+                Assert.AreEqual(2, activity.RowsAffected);
             }
         }
 
@@ -73,19 +73,19 @@ namespace toofz.Tests
             {
                 // Arrange
                 var mockLog = new Mock<ILog>();
+                var log = mockLog.Object;
                 var name = "entries";
                 var mockStopwatch = new Mock<IStopwatch>();
-                var notifier = new StoreNotifier(mockLog.Object, name, mockStopwatch.Object);
-                notifier.Report(759225);
-                mockStopwatch
-                    .SetupGet(stopwatch => stopwatch.Elapsed)
-                    .Returns((6.42).Seconds());
+                var stopwatch = mockStopwatch.Object;
+                var activity = new StoreActivity(log, name, stopwatch);
+                activity.Report(759225);
+                mockStopwatch.SetupGet(s => s.Elapsed).Returns((6.42).Seconds());
 
                 // Act
-                notifier.Dispose();
+                activity.Dispose();
 
                 // Assert
-                mockLog.Verify(log => log.Info("Store entries complete -- 759225 rows affected over 6.4 seconds (118259 rows per second)."));
+                mockLog.Verify(l => l.Info("Store entries complete -- 759225 rows affected over 6.4 seconds (118259 rows per second)."));
             }
 
             [TestMethod]
@@ -93,20 +93,20 @@ namespace toofz.Tests
             {
                 // Arrange
                 var mockLog = new Mock<ILog>();
+                var log = mockLog.Object;
                 var name = "entries";
                 var mockStopwatch = new Mock<IStopwatch>();
-                var notifier = new StoreNotifier(mockLog.Object, name, mockStopwatch.Object);
-                notifier.Report(759225);
-                mockStopwatch
-                    .SetupGet(stopwatch => stopwatch.Elapsed)
-                    .Returns((6.42).Seconds());
+                var stopwatch = mockStopwatch.Object;
+                var activity = new StoreActivity(log, name, stopwatch);
+                activity.Report(759225);
+                mockStopwatch.SetupGet(s => s.Elapsed).Returns((6.42).Seconds());
 
                 // Act
-                notifier.Dispose();
-                notifier.Dispose();
+                activity.Dispose();
+                activity.Dispose();
 
                 // Assert
-                mockLog.Verify(log => log.Info("Store entries complete -- 759225 rows affected over 6.4 seconds (118259 rows per second)."), Times.Once);
+                mockLog.Verify(l => l.Info("Store entries complete -- 759225 rows affected over 6.4 seconds (118259 rows per second)."), Times.Once);
             }
         }
     }

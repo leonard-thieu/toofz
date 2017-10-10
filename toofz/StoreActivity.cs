@@ -3,11 +3,11 @@ using log4net;
 
 namespace toofz
 {
-    public sealed class StoreNotifier : ProgressNotifierBase<long>
+    public sealed class StoreActivity : ProgressActivityBase<long>
     {
-        public StoreNotifier(ILog log, string name) : this(log, name, null) { }
+        public StoreActivity(ILog log, string name) : this(log, name, null) { }
 
-        internal StoreNotifier(ILog log, string name, IStopwatch stopwatch) : base("Store", log, name, stopwatch) { }
+        internal StoreActivity(ILog log, string name, IStopwatch stopwatch) : base("Store", log, name, stopwatch) { }
 
         long rowsAffected;
 

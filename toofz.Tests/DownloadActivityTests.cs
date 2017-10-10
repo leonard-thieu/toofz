@@ -5,7 +5,7 @@ using Moq;
 
 namespace toofz.Tests
 {
-    class DownloadNotifierTests
+    class DownloadActivityTests
     {
         [TestClass]
         public class Constructor
@@ -14,14 +14,14 @@ namespace toofz.Tests
             public void ReturnsInstance()
             {
                 // Arrange
-                var mockLog = new Mock<ILog>();
+                var log = Mock.Of<ILog>();
                 var name = "leaderboards";
 
                 // Act
-                var notifier = new DownloadNotifier(mockLog.Object, name);
+                var activity = new DownloadActivity(log, name);
 
                 // Assert
-                Assert.IsInstanceOfType(notifier, typeof(DownloadNotifier));
+                Assert.IsInstanceOfType(activity, typeof(DownloadActivity));
             }
         }
 
@@ -32,14 +32,14 @@ namespace toofz.Tests
             public void ReturnsTotalBytes()
             {
                 // Arrange
-                var mockLog = new Mock<ILog>();
+                var log = Mock.Of<ILog>();
                 var name = "leaderboards";
-                var notifier = new DownloadNotifier(mockLog.Object, name);
-                notifier.Report(21);
-                notifier.Report(21);
+                var activity = new DownloadActivity(log, name);
+                activity.Report(21);
+                activity.Report(21);
 
                 // Act
-                var totalBytes = notifier.TotalBytes;
+                var totalBytes = activity.TotalBytes;
 
                 // Assert
                 Assert.AreEqual(42, totalBytes);
@@ -55,14 +55,14 @@ namespace toofz.Tests
                 // Arrange
                 var log = Mock.Of<ILog>();
                 var name = "myName";
-                var notifier = new DownloadNotifier(log, name);
+                var activity = new DownloadActivity(log, name);
 
                 // Act
-                notifier.Report(1);
-                notifier.Report(1);
+                activity.Report(1);
+                activity.Report(1);
 
                 // Assert
-                Assert.AreEqual(2, notifier.TotalBytes);
+                Assert.AreEqual(2, activity.TotalBytes);
             }
         }
 
@@ -74,18 +74,19 @@ namespace toofz.Tests
             {
                 // Arrange
                 var mockLog = new Mock<ILog>();
+                var log = mockLog.Object;
+                var name = "leaderboards";
                 var mockStopwatch = new Mock<IStopwatch>();
-                var notifier = new DownloadNotifier(mockLog.Object, "leaderboards", mockStopwatch.Object);
-                notifier.Report((long)(26.3).Megabytes().Bytes);
-                mockStopwatch
-                    .SetupGet(stopwatch => stopwatch.Elapsed)
-                    .Returns((10.34).Seconds());
+                var stopwatch = mockStopwatch.Object;
+                var activity = new DownloadActivity(log, name, stopwatch);
+                activity.Report((long)(26.3).Megabytes().Bytes);
+                mockStopwatch.SetupGet(s => s.Elapsed).Returns((10.34).Seconds());
 
                 // Act
-                notifier.Dispose();
+                activity.Dispose();
 
                 // Assert
-                mockLog.Verify(log => log.Info("Download leaderboards complete -- 26.3 MB over 10.3 seconds (2.5 MBps)."));
+                mockLog.Verify(l => l.Info("Download leaderboards complete -- 26.3 MB over 10.3 seconds (2.5 MBps)."));
             }
 
             [TestMethod]
@@ -93,19 +94,20 @@ namespace toofz.Tests
             {
                 // Arrange
                 var mockLog = new Mock<ILog>();
+                var log = mockLog.Object;
+                var name = "leaderboards";
                 var mockStopwatch = new Mock<IStopwatch>();
-                var notifier = new DownloadNotifier(mockLog.Object, "leaderboards", mockStopwatch.Object);
-                notifier.Report((long)(26.3).Megabytes().Bytes);
-                mockStopwatch
-                    .SetupGet(stopwatch => stopwatch.Elapsed)
-                    .Returns((10.34).Seconds());
+                var stopwatch = mockStopwatch.Object;
+                var activity = new DownloadActivity(log, name, stopwatch);
+                activity.Report((long)(26.3).Megabytes().Bytes);
+                mockStopwatch.SetupGet(s => s.Elapsed).Returns((10.34).Seconds());
 
                 // Act
-                notifier.Dispose();
-                notifier.Dispose();
+                activity.Dispose();
+                activity.Dispose();
 
                 // Assert
-                mockLog.Verify(log => log.Info("Download leaderboards complete -- 26.3 MB over 10.3 seconds (2.5 MBps)."), Times.Once);
+                mockLog.Verify(l => l.Info("Download leaderboards complete -- 26.3 MB over 10.3 seconds (2.5 MBps)."), Times.Once);
             }
         }
     }
