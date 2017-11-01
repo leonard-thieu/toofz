@@ -285,7 +285,7 @@ namespace toofz.Tests
                 provider.SetPropertyValues(context, values);
 
                 // Assert
-                Assert.Equal(Resources.SerializeAsXmlConfig, sw.ToString());
+                Assert.Equal(Resources.SerializeAsXmlConfig, sw.ToString(), ignoreLineEndingDifferences: true);
             }
 
             [Fact]
@@ -305,7 +305,7 @@ namespace toofz.Tests
                 provider.SetPropertyValues(context, values);
 
                 // Assert
-                Assert.Equal(Resources.TimeSpanConfig, sw.ToString());
+                Assert.Equal(Resources.TimeSpanConfig, sw.ToString(), ignoreLineEndingDifferences: true);
             }
         }
 

@@ -31,7 +31,7 @@ namespace toofz.Tests
   StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
     toofz.Tests.ExceptionHelper.GetThrownException()";
-                    Assert.Equal(expected, output);
+                    Assert.Equal(expected, output, ignoreLineEndingDifferences: true);
                 }
             }
 
@@ -62,7 +62,7 @@ namespace toofz.Tests
     StackTrace:
       toofz.Tests.ExceptionHelper.ThrowException()
       toofz.Tests.ExceptionHelper.ThrowExceptionWithInnerException()";
-                    Assert.Equal(expected, output);
+                    Assert.Equal(expected, output, ignoreLineEndingDifferences: true);
                 }
             }
         }
@@ -162,7 +162,7 @@ namespace toofz.Tests
 StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
     toofz.Tests.ExceptionHelper.GetThrownException()";
-                    Assert.Equal(expected, output);
+                    Assert.Equal(expected, output, ignoreLineEndingDifferences: true);
                 }
             }
 
@@ -185,7 +185,7 @@ StackTrace:
 StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
     toofz.TestsShared.Record.Exception(Action testCode)";
-                    Assert.Equal(expected, output);
+                    Assert.Equal(expected, output, ignoreLineEndingDifferences: true);
                 }
             }
 
