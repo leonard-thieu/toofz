@@ -12,16 +12,16 @@ namespace toofz
 {
     public sealed class ServiceSettingsProvider : SettingsProvider
     {
-        static readonly ILog Log = LogManager.GetLogger(typeof(ServiceSettingsProvider));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ServiceSettingsProvider));
 
         internal const string ConfigFileName = "user.config";
-        const string SettingsName = "settings";
-        const string SettingName = "setting";
-        const string NameName = "name";
-        const string ValueName = "value";
+        private const string SettingsName = "settings";
+        private const string SettingName = "setting";
+        private const string NameName = "name";
+        private const string ValueName = "value";
 
-        static XmlSerializerNamespaces emptyNamespaces;
-        static XmlSerializerNamespaces EmptyNamespaces
+        private static XmlSerializerNamespaces emptyNamespaces;
+        private static XmlSerializerNamespaces EmptyNamespaces
         {
             get
             {
@@ -34,7 +34,7 @@ namespace toofz
             }
         }
 
-        Func<TextReader> getSettingsReader = () => File.OpenText(ConfigFileName);
+        private Func<TextReader> getSettingsReader = () => File.OpenText(ConfigFileName);
         /// <summary>
         /// Gets or sets a factory function that returns an instance of <see cref="TextReader"/> which is used to read settings.
         /// </summary>
@@ -47,7 +47,7 @@ namespace toofz
             set => getSettingsReader = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        Func<TextWriter> getSettingsWriter = () => File.CreateText(ConfigFileName);
+        private Func<TextWriter> getSettingsWriter = () => File.CreateText(ConfigFileName);
         /// <summary>
         /// Gets or sets a factory function that returns an instance of <see cref="TextWriter"/> which is used to write settings.
         /// </summary>
@@ -60,7 +60,7 @@ namespace toofz
             set => getSettingsWriter = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        string applicationName = Assembly.GetExecutingAssembly().GetName().Name;
+        private string applicationName = Assembly.GetExecutingAssembly().GetName().Name;
         /// <summary>
         /// Gets or sets the name of the currently running application.
         /// </summary>

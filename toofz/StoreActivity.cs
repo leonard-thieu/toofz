@@ -9,7 +9,7 @@ namespace toofz
 
         internal StoreActivity(ILog log, string name, IStopwatch stopwatch) : base("Store", log, name, stopwatch) { }
 
-        long rowsAffected;
+        private long rowsAffected;
 
         public long RowsAffected => rowsAffected;
 
@@ -20,7 +20,7 @@ namespace toofz
 
         #region IDisposable Implementation
 
-        bool disposed;
+        private bool disposed;
 
         public override void Dispose()
         {
@@ -34,6 +34,7 @@ namespace toofz
             Log.Info($"{Category} {Name} complete -- {rows} rows affected over {total.ToString("F1")} seconds ({rate} rows per second).");
 
             disposed = true;
+
             base.Dispose();
         }
 

@@ -10,7 +10,7 @@ using toofz.TestsShared;
 
 namespace toofz.Tests
 {
-    class ServiceSettingsProviderTests
+    public class ServiceSettingsProviderTests
     {
         [TestClass]
         public class ApplicationName

@@ -2,7 +2,7 @@
 
 namespace toofz.Tests
 {
-    static class SettingsUtil
+    internal static class SettingsUtil
     {
         public static SettingsProperty CreateProperty<T>(string name)
         {

@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace toofz
 {
-    sealed class StopwatchAdapter : IStopwatch
+    internal sealed class StopwatchAdapter : IStopwatch
     {
         /// <summary>
         /// Initializes a new <see cref="StopwatchAdapter"/> instance, sets the elapsed time property to zero, and 
@@ -22,7 +22,7 @@ namespace toofz
             this.stopwatch = stopwatch;
         }
 
-        readonly Stopwatch stopwatch;
+        private readonly Stopwatch stopwatch;
 
         /// <summary>
         /// Gets a value indicating whether the stopwatch timer is running.

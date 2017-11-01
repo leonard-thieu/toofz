@@ -5,7 +5,7 @@ using Moq;
 
 namespace toofz.Tests
 {
-    class DownloadActivityTests
+    public class DownloadActivityTests
     {
         [TestClass]
         public class Constructor

@@ -8,7 +8,7 @@ using toofz.TestsShared;
 
 namespace toofz.Tests
 {
-    class ExceptionRendererTests
+    public class ExceptionRendererTests
     {
         [TestClass]
         public class RenderObjectMethod

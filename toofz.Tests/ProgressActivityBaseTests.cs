@@ -5,7 +5,7 @@ using Moq;
 
 namespace toofz.Tests
 {
-    class ProgressActivityBaseTests
+    public class ProgressActivityBaseTests
     {
         [TestClass]
         public class Constructor
@@ -27,7 +27,7 @@ namespace toofz.Tests
             }
         }
 
-        class ProgressActivityBaseAdapter : ProgressActivityBase<int>
+        private class ProgressActivityBaseAdapter : ProgressActivityBase<int>
         {
             internal ProgressActivityBaseAdapter(string category, ILog log, string name, IStopwatch stopwatch) : base(category, log, name, stopwatch) { }
 

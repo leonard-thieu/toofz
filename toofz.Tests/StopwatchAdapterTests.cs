@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace toofz.Tests
 {
-    class StopwatchAdapterTests
+    public class StopwatchAdapterTests
     {
         [TestClass]
         public class StartNew

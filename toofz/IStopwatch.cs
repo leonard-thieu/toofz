@@ -2,7 +2,7 @@
 
 namespace toofz
 {
-    interface IStopwatch
+    internal interface IStopwatch
     {
         /// <summary>
         /// Gets a value indicating whether the stopwatch timer is running.

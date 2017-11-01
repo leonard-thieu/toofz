@@ -23,7 +23,7 @@ namespace toofz
 
         #region IDisposable Members
 
-        bool disposed;
+        private bool disposed;
 
         public virtual void Dispose()
         {

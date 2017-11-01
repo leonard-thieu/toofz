@@ -1,6 +1,5 @@
 ﻿using System;
 using System.CodeDom.Compiler;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using log4net;
@@ -13,7 +12,7 @@ namespace toofz
     /// </summary>
     public sealed class ExceptionRenderer : IObjectRenderer
     {
-        static readonly ILog Log = LogManager.GetLogger(typeof(ExceptionRenderer));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ExceptionRenderer));
 
         /// <summary>
         /// Renders an object of type <see cref="Exception"/> similar to how Visual Studio Exception Assistant 
@@ -22,7 +21,6 @@ namespace toofz
         /// <param name="rendererMap">Not used.</param>
         /// <param name="exception">The exception.</param>
         /// <param name="writer">The writer.</param>
-        [ExcludeFromCodeCoverage]
         public void RenderObject(RendererMap rendererMap, object exception, TextWriter writer)
         {
             RenderObject(rendererMap, exception, writer, false);

@@ -3,10 +3,10 @@ using System.Runtime.CompilerServices;
 
 namespace toofz.Tests
 {
-    static class ExceptionHelper
+    internal static class ExceptionHelper
     {
         [MethodImpl(MethodImplOptions.NoInlining)]
-        static void ThrowException()
+        private static void ThrowException()
         {
             throw new Exception("Thrown test exception");
         }
@@ -26,7 +26,7 @@ namespace toofz.Tests
             return null;
         }
 
-        static void ThrowExceptionWithInnerException()
+        private static void ThrowExceptionWithInnerException()
         {
             try
             {

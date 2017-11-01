@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace toofz.Tests
 {
-    class EncryptedSecretTests
+    public class EncryptedSecretTests
     {
         [TestClass]
         public class Constructor

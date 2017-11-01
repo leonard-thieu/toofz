@@ -13,25 +13,25 @@ namespace toofz
     [XmlRoot(EncryptedSecretName)]
     public sealed class EncryptedSecret : IXmlSerializable
     {
-        const int SaltSize = 8;
+        private const int SaltSize = 8;
 
         // Using the host's physical address is a compromise between security and ease of use.
         // One of the goals of the toofz projects is for the code to be easy to evaluate and understand.
         // Making it straight-forward to run projects is a step in this direction, however, it does mean that 
         // we can't ask users to secure a password.
-        static readonly string Password = (from nic in NetworkInterface.GetAllNetworkInterfaces()
-                                           where nic.OperationalStatus == OperationalStatus.Up
-                                           select nic.GetPhysicalAddress())
-                                          .FirstOrDefault()
-                                          .ToString();
+        private static readonly string Password = (from nic in NetworkInterface.GetAllNetworkInterfaces()
+                                                   where nic.OperationalStatus == OperationalStatus.Up
+                                                   select nic.GetPhysicalAddress())
+                                                   .FirstOrDefault()
+                                                   .ToString();
 
-        const string EncryptedSecretName = "encryptedSecret";
-        const string SecretName = "secret";
-        const string SaltName = "salt";
-        const string IterationsName = "iterations";
+        private const string EncryptedSecretName = "encryptedSecret";
+        private const string SecretName = "secret";
+        private const string SaltName = "salt";
+        private const string IterationsName = "iterations";
 
         // Required for XML serialization
-        EncryptedSecret() { }
+        private EncryptedSecret() { }
 
         /// <summary>
         /// Initializes an instance of the <see cref="EncryptedSecret"/> class.
@@ -41,7 +41,7 @@ namespace toofz
         /// <exception cref="ArgumentException">
         /// <paramref name="secret"/> cannot be null or empty.
         /// </exception>
-        public EncryptedSecret(string secret, int iterations)
+        public EncryptedSecret(string secret, int iterations) : this()
         {
             if (string.IsNullOrEmpty(secret))
                 throw new ArgumentException($"{nameof(secret)} cannot be null or empty.", nameof(secret));
@@ -66,9 +66,9 @@ namespace toofz
             this.iterations = iterations;
         }
 
-        byte[] encrypted;
-        byte[] salt;
-        int iterations;
+        private byte[] encrypted;
+        private byte[] salt;
+        private int iterations;
 
         /// <summary>
         /// Decrypts the encrypted secret.

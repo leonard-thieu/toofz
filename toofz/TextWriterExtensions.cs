@@ -6,7 +6,7 @@ namespace toofz
     /// <summary>
     /// Contains extension methods for <see cref="TextWriter"/>.
     /// </summary>
-    static class TextWriterExtensions
+    internal static class TextWriterExtensions
     {
         /// <summary>
         /// Writes a line terminator, followed by the text representation of an object by calling the ToString method on 
@@ -20,7 +20,7 @@ namespace toofz
         public static void WriteLineStart(this TextWriter writer, object value)
         {
             if (writer == null)
-                throw new ArgumentNullException(nameof(writer), $"{nameof(writer)} is null.");
+                throw new ArgumentNullException(nameof(writer));
 
             writer.WriteLine();
             writer.Write(value);

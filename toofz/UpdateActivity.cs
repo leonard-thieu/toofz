@@ -11,7 +11,7 @@ namespace toofz
 
         #region IDisposable Members
 
-        bool disposed;
+        private bool disposed;
 
         public override void Dispose()
         {
@@ -22,6 +22,7 @@ namespace toofz
             Log.Info($"{Category} {Name} complete after {duration} s.");
 
             disposed = true;
+
             base.Dispose();
         }
 

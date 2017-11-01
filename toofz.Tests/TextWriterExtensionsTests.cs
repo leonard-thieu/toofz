@@ -5,7 +5,7 @@ using Moq;
 
 namespace toofz.Tests
 {
-    class TextWriterExtensionsTests
+    public class TextWriterExtensionsTests
     {
         [TestClass]
         public class WriteLineStart

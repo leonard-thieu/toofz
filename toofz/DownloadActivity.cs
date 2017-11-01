@@ -10,7 +10,7 @@ namespace toofz
 
         internal DownloadActivity(ILog log, string name, IStopwatch stopwatch) : base("Download", log, name, stopwatch) { }
 
-        long totalBytes;
+        private long totalBytes;
 
         public long TotalBytes => totalBytes;
 
@@ -21,7 +21,7 @@ namespace toofz
 
         #region IDisposable Members
 
-        bool disposed;
+        private bool disposed;
 
         public override void Dispose()
         {
@@ -39,6 +39,7 @@ namespace toofz
             Log.Info($"{Category} {Name} complete -- {size} over {time} seconds ({rate}).");
 
             disposed = true;
+
             base.Dispose();
         }
 
