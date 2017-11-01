@@ -4,18 +4,16 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using toofz.Tests.Properties;
-using toofz.TestsShared;
+using Xunit;
 
 namespace toofz.Tests
 {
     public class ServiceSettingsProviderTests
     {
-        [TestClass]
         public class ApplicationName
         {
-            [TestMethod]
+            [Fact]
             public void SetToNull_ThrowsArgumentNullException()
             {
                 // Arrange
@@ -23,13 +21,13 @@ namespace toofz.Tests
                 string applicationName = null;
 
                 // Act -> Assert
-                Assert.ThrowsException<ArgumentNullException>(() =>
+                Assert.Throws<ArgumentNullException>(() =>
                 {
                     provider.ApplicationName = applicationName;
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnsADefaultValue()
             {
                 // Arrange
@@ -39,10 +37,10 @@ namespace toofz.Tests
                 var applicationName = provider.ApplicationName;
 
                 // Assert
-                Assert.AreEqual("toofz", applicationName);
+                Assert.Equal("toofz", applicationName);
             }
 
-            [TestMethod]
+            [Fact]
             public void GetSetBehavior()
             {
                 // Arrange
@@ -53,14 +51,13 @@ namespace toofz.Tests
                 provider.ApplicationName = applicationName;
 
                 // Assert
-                Assert.AreEqual(applicationName, provider.ApplicationName);
+                Assert.Equal(applicationName, provider.ApplicationName);
             }
         }
 
-        [TestClass]
         public class GetSettingsReader
         {
-            [TestMethod]
+            [Fact]
             public void SetToNull_ThrowsArgumentNullException()
             {
                 // Arrange
@@ -68,13 +65,13 @@ namespace toofz.Tests
                 Func<TextReader> getSettingsReader = null;
 
                 // Act -> Assert
-                Assert.ThrowsException<ArgumentNullException>(() =>
+                Assert.Throws<ArgumentNullException>(() =>
                 {
                     provider.GetSettingsReader = getSettingsReader;
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnsADefaultValue()
             {
                 // Arrange
@@ -84,10 +81,10 @@ namespace toofz.Tests
                 var getSettingsReader = provider.GetSettingsReader;
 
                 // Assert
-                Assert.IsNotNull(getSettingsReader);
+                Assert.NotNull(getSettingsReader);
             }
 
-            [TestMethod]
+            [Fact]
             public void GetSetBehavior()
             {
                 // Arrange
@@ -98,14 +95,13 @@ namespace toofz.Tests
                 provider.GetSettingsReader = getSettingsReader;
 
                 // Assert
-                Assert.AreEqual(getSettingsReader, provider.GetSettingsReader);
+                Assert.Equal(getSettingsReader, provider.GetSettingsReader);
             }
         }
 
-        [TestClass]
         public class GetSettingsWriter
         {
-            [TestMethod]
+            [Fact]
             public void SetToNull_ThrowsArgumentNullException()
             {
                 // Arrange
@@ -113,13 +109,13 @@ namespace toofz.Tests
                 Func<TextWriter> getSettingsWriter = null;
 
                 // Act -> Assert
-                Assert.ThrowsException<ArgumentNullException>(() =>
+                Assert.Throws<ArgumentNullException>(() =>
                 {
                     provider.GetSettingsWriter = getSettingsWriter;
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnsADefaultValue()
             {
                 // Arrange
@@ -129,10 +125,10 @@ namespace toofz.Tests
                 var getSettingsWriter = provider.GetSettingsWriter;
 
                 // Assert
-                Assert.IsNotNull(getSettingsWriter);
+                Assert.NotNull(getSettingsWriter);
             }
 
-            [TestMethod]
+            [Fact]
             public void GetSetBehavior()
             {
                 // Arrange
@@ -143,14 +139,13 @@ namespace toofz.Tests
                 provider.GetSettingsWriter = getSettingsWriter;
 
                 // Assert
-                Assert.AreEqual(getSettingsWriter, provider.GetSettingsWriter);
+                Assert.Equal(getSettingsWriter, provider.GetSettingsWriter);
             }
         }
 
-        [TestClass]
         public class Initialize
         {
-            [TestMethod]
+            [Fact]
             public void NameIsNull_DoesNotThrowArgumentNullException()
             {
                 // Arrange
@@ -160,7 +155,7 @@ namespace toofz.Tests
                 provider.Initialize(null, new NameValueCollection());
             }
 
-            [TestMethod]
+            [Fact]
             public void Initializes()
             {
                 // Arrange
@@ -170,15 +165,14 @@ namespace toofz.Tests
                 provider.Initialize("myName", new NameValueCollection());
 
                 // Assert
-                Assert.AreEqual(provider.ApplicationName, provider.Name);
-                Assert.AreEqual(provider.ApplicationName, provider.Description);
+                Assert.Equal(provider.ApplicationName, provider.Name);
+                Assert.Equal(provider.ApplicationName, provider.Description);
             }
         }
 
-        [TestClass]
         public class GetPropertyValues
         {
-            [TestMethod]
+            [Fact]
             public void NoConfig_ReturnsDefaultValues()
             {
                 // Arrange
@@ -195,12 +189,12 @@ namespace toofz.Tests
                 var values = provider.GetPropertyValues(context, properties);
 
                 // Assert
-                Assert.AreEqual(2, values.Count);
-                Assert.AreEqual("myDefaultValue1", values["myProp1"].PropertyValue);
-                Assert.AreEqual("myDefaultValue2", values["myProp2"].PropertyValue);
+                Assert.Equal(2, values.Count);
+                Assert.Equal("myDefaultValue1", values["myProp1"].PropertyValue);
+                Assert.Equal("myDefaultValue2", values["myProp2"].PropertyValue);
             }
 
-            [TestMethod]
+            [Fact]
             public void HandlesSerializeAsXml()
             {
                 // Arrange
@@ -217,10 +211,10 @@ namespace toofz.Tests
                 var myProp = values["myProp"].PropertyValue;
 
                 // Assert
-                Assert.IsInstanceOfType(myProp, typeof(XmlSerializable));
+                Assert.IsAssignableFrom<XmlSerializable>(myProp);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnsValuesFromConfig()
             {
                 // Arrange
@@ -237,16 +231,15 @@ namespace toofz.Tests
                 var values = provider.GetPropertyValues(context, properties);
 
                 // Assert
-                Assert.AreEqual(2, values.Count);
-                Assert.AreEqual("mySerializedValue1", values["myProp1"].PropertyValue);
-                Assert.AreEqual("mySerializedValue2", values["myProp2"].PropertyValue);
+                Assert.Equal(2, values.Count);
+                Assert.Equal("mySerializedValue1", values["myProp1"].PropertyValue);
+                Assert.Equal("mySerializedValue2", values["myProp2"].PropertyValue);
             }
         }
 
-        [TestClass]
         public class SetPropertyValues
         {
-            [TestMethod]
+            [Fact]
             public void SetsValuesInConfig()
             {
                 // Arrange
@@ -266,10 +259,10 @@ namespace toofz.Tests
                 provider.SetPropertyValues(context, values);
 
                 // Assert
-                Assert.That.NormalizedAreEqual(Resources.BasicConfig, sw.ToString());
+                Assert.Equal(Resources.BasicConfig, sw.ToString());
             }
 
-            [TestMethod]
+            [Fact]
             public void HandlesSerializeAsXml()
             {
                 // Arrange
@@ -292,10 +285,10 @@ namespace toofz.Tests
                 provider.SetPropertyValues(context, values);
 
                 // Assert
-                Assert.That.NormalizedAreEqual(Resources.SerializeAsXmlConfig, sw.ToString());
+                Assert.Equal(Resources.SerializeAsXmlConfig, sw.ToString());
             }
 
-            [TestMethod]
+            [Fact]
             public void SerializesTimeSpanInHumanReadableFormat()
             {
                 // Arrange
@@ -312,35 +305,33 @@ namespace toofz.Tests
                 provider.SetPropertyValues(context, values);
 
                 // Assert
-                Assert.That.NormalizedAreEqual(Resources.TimeSpanConfig, sw.ToString());
+                Assert.Equal(Resources.TimeSpanConfig, sw.ToString());
             }
         }
 
-        [TestClass]
-        [TestCategory("Integration")]
+        [Trait("Category", "Integration")]
         public class IntegrationTests
         {
-            TestSettings settings;
-
-            [TestInitialize]
-            public void TestInit()
+            public IntegrationTests()
             {
                 File.Delete(ServiceSettingsProvider.ConfigFileName);
                 settings = TestSettings.Default;
                 settings.Reload();
             }
 
-            [TestMethod]
+            private TestSettings settings;
+
+            [Fact]
             public void ReturnsDefaultValueIfValueIsNotPresent()
             {
                 // Arrange -> Act
                 var appId = settings.AppId;
 
                 // Assert
-                Assert.AreEqual(247080U, appId);
+                Assert.Equal(247080U, appId);
             }
 
-            [TestMethod]
+            [Fact]
             public void SavesChangedSetting()
             {
                 // Arrange
@@ -352,10 +343,10 @@ namespace toofz.Tests
                 var appId = settings.AppId;
 
                 // Assert
-                Assert.IsTrue(settings.ForceSave);
+                Assert.True(settings.ForceSave);
             }
 
-            [TestMethod]
+            [Fact]
             public void PersistsDefaultValue()
             {
                 // Arrange
@@ -370,10 +361,10 @@ namespace toofz.Tests
                                where s.Attributes("name").Single().Value == "AppId"
                                select s.Element("value"))
                               .Single();
-                Assert.AreEqual(247080.ToString(), appIdEl.Value);
+                Assert.Equal(247080.ToString(), appIdEl.Value);
             }
 
-            [TestMethod]
+            [Fact]
             public void PersistsDefaultTimeSpanInHumanReadableFormat()
             {
                 // Arrange
@@ -388,10 +379,10 @@ namespace toofz.Tests
                                   where s.Attributes("name").Single().Value == "Duration"
                                   select s.Element("value"))
                                  .Single();
-                Assert.AreEqual("00:02:00", durationEl.Value);
+                Assert.Equal("00:02:00", durationEl.Value);
             }
 
-            [TestMethod]
+            [Fact]
             public void PersistsSpecifiedTimeSpanInHumanReadableFormat()
             {
                 // Arrange
@@ -406,10 +397,10 @@ namespace toofz.Tests
                                   where s.Attributes("name").Single().Value == "Duration"
                                   select s.Element("value"))
                                  .Single();
-                Assert.AreEqual("00:03:54", durationEl.Value);
+                Assert.Equal("00:03:54", durationEl.Value);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReadsTimeSpanInHumanReadableFormat()
             {
                 // Arrange
@@ -421,7 +412,7 @@ namespace toofz.Tests
                 var duration = settings.Duration;
 
                 // Assert
-                Assert.AreEqual(TimeSpan.FromSeconds(234), duration);
+                Assert.Equal(TimeSpan.FromSeconds(234), duration);
             }
         }
     }

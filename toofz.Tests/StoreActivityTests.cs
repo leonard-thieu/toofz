@@ -1,16 +1,15 @@
 ﻿using Humanizer;
 using log4net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace toofz.Tests
 {
     public class StoreActivityTests
     {
-        [TestClass]
         public class Constructor
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsInstance()
             {
                 // Arrange
@@ -21,14 +20,13 @@ namespace toofz.Tests
                 var activity = new StoreActivity(log, name);
 
                 // Assert
-                Assert.IsInstanceOfType(activity, typeof(StoreActivity));
+                Assert.IsAssignableFrom<StoreActivity>(activity);
             }
         }
 
-        [TestClass]
         public class RowsAffectedProperty
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsRowsAffected()
             {
                 // Arrange
@@ -41,14 +39,13 @@ namespace toofz.Tests
                 var rowsAffected = activity.RowsAffected;
 
                 // Assert
-                Assert.AreEqual(20, rowsAffected);
+                Assert.Equal(20, rowsAffected);
             }
         }
 
-        [TestClass]
         public class ReportMethod
         {
-            [TestMethod]
+            [Fact]
             public void AddsValueToRowsAffected()
             {
                 // Arrange
@@ -61,14 +58,13 @@ namespace toofz.Tests
                 activity.Report(1);
 
                 // Assert
-                Assert.AreEqual(2, activity.RowsAffected);
+                Assert.Equal(2, activity.RowsAffected);
             }
         }
 
-        [TestClass]
         public class DisposeMethod
         {
-            [TestMethod]
+            [Fact]
             public void LogsCompletionMessage()
             {
                 // Arrange
@@ -88,7 +84,7 @@ namespace toofz.Tests
                 mockLog.Verify(l => l.Info("Store entries complete -- 759225 rows affected over 6.4 seconds (118259 rows per second)."));
             }
 
-            [TestMethod]
+            [Fact]
             public void DisposingMoreThanOnce_OnlyLogsCompletionMessageOnce()
             {
                 // Arrange

@@ -1,16 +1,15 @@
 ﻿using System;
 using log4net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace toofz.Tests
 {
     public class ProgressActivityBaseTests
     {
-        [TestClass]
         public class Constructor
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsInstance()
             {
                 // Arrange
@@ -23,7 +22,7 @@ namespace toofz.Tests
                 var activity = new ProgressActivityBaseAdapter(category, log, name, stopwatch);
 
                 // Assert
-                Assert.IsInstanceOfType(activity, typeof(ProgressActivityBase<int>));
+                Assert.IsAssignableFrom<ProgressActivityBase<int>>(activity);
             }
         }
 

@@ -1,16 +1,15 @@
 ﻿using Humanizer;
 using log4net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace toofz.Tests
 {
     public class UpdateActivityTests
     {
-        [TestClass]
         public class Constructor
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsInstance()
             {
                 // Arrange
@@ -21,14 +20,13 @@ namespace toofz.Tests
                 var activity = new UpdateActivity(log, name);
 
                 // Assert
-                Assert.IsInstanceOfType(activity, typeof(UpdateActivity));
+                Assert.IsAssignableFrom<UpdateActivity>(activity);
             }
         }
 
-        [TestClass]
         public class DisposeMethod
         {
-            [TestMethod]
+            [Fact]
             public void LogsCompletionMessage()
             {
                 // Arrange
@@ -47,7 +45,7 @@ namespace toofz.Tests
                 mockLog.Verify(l => l.Info("Update daily leaderboards complete after 13.2 s."));
             }
 
-            [TestMethod]
+            [Fact]
             public void DisposingMoreThanOnce_OnlyLogsCompletionMessageOnce()
             {
                 // Arrange

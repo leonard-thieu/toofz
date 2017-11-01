@@ -2,18 +2,16 @@
 using System.CodeDom.Compiler;
 using System.IO;
 using log4net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using toofz.TestsShared;
+using Xunit;
 
 namespace toofz.Tests
 {
     public class ExceptionRendererTests
     {
-        [TestClass]
         public class RenderObjectMethod
         {
-            [TestMethod]
+            [Fact]
             public void RendersException()
             {
                 // Arrange
@@ -33,11 +31,11 @@ namespace toofz.Tests
   StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
     toofz.Tests.ExceptionHelper.GetThrownException()";
-                    Assert.That.NormalizedAreEqual(expected, output);
+                    Assert.Equal(expected, output);
                 }
             }
 
-            [TestMethod]
+            [Fact]
             public void ExceptionHasInnerException_RendersExceptionRecursively()
             {
                 // Arrange
@@ -64,15 +62,14 @@ namespace toofz.Tests
     StackTrace:
       toofz.Tests.ExceptionHelper.ThrowException()
       toofz.Tests.ExceptionHelper.ThrowExceptionWithInnerException()";
-                    Assert.That.NormalizedAreEqual(expected, output);
+                    Assert.Equal(expected, output);
                 }
             }
         }
 
-        [TestClass]
         public class FlattenExceptionMethod
         {
-            [TestMethod]
+            [Fact]
             public void ExIsAggregateExceptionAndHasMultipleInnerExceptions_ReturnsFlattenedException()
             {
                 // Arrange
@@ -84,12 +81,12 @@ namespace toofz.Tests
                 var ex = ExceptionRenderer.FlattenException(aggr);
 
                 // Assert
-                Assert.IsInstanceOfType(ex, typeof(AggregateException));
+                Assert.IsAssignableFrom<AggregateException>(ex);
                 var aggr2 = (AggregateException)ex;
-                Assert.IsTrue(aggr2.InnerExceptions.Count > 1);
+                Assert.True(aggr2.InnerExceptions.Count > 1);
             }
 
-            [TestMethod]
+            [Fact]
             public void ExIsAggregateException_ReturnsInnerException()
             {
                 // Arrange
@@ -100,10 +97,10 @@ namespace toofz.Tests
                 var ex = ExceptionRenderer.FlattenException(aggr);
 
                 // Assert
-                Assert.AreSame(inner, ex);
+                Assert.Same(inner, ex);
             }
 
-            [TestMethod]
+            [Fact]
             public void ExIsNotAggregateException_ReturnsEx()
             {
                 // Arrange
@@ -113,14 +110,13 @@ namespace toofz.Tests
                 var ex2 = ExceptionRenderer.FlattenException(ex);
 
                 // Assert
-                Assert.AreSame(ex, ex2);
+                Assert.Same(ex, ex2);
             }
         }
 
-        [TestClass]
         public class RenderStackTraceMethod
         {
-            [TestMethod]
+            [Fact]
             public void StackTraceIsNull_DoesNotThrowNullReferenceException()
             {
                 // Arrange
@@ -133,7 +129,7 @@ namespace toofz.Tests
                 }
             }
 
-            [TestMethod]
+            [Fact]
             public void StackTraceIsEmpty_DoesNotRenderStackTrace()
             {
                 // Arrange
@@ -145,11 +141,11 @@ namespace toofz.Tests
                     ExceptionRenderer.RenderStackTrace(stackTrace, indentedTextWriter);
 
                     // Assert
-                    Assert.AreEqual("", sw.ToString());
+                    Assert.Equal("", sw.ToString());
                 }
             }
 
-            [TestMethod]
+            [Fact]
             public void StackTraceFromThrownException_RendersStackTraceCorrectly()
             {
                 // Arrange
@@ -166,11 +162,11 @@ namespace toofz.Tests
 StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
     toofz.Tests.ExceptionHelper.GetThrownException()";
-                    Assert.That.NormalizedAreEqual(expected, output);
+                    Assert.Equal(expected, output);
                 }
             }
 
-            [TestMethod]
+            [Fact]
             public void StackTraceFromUnthrownException_RendersStackTraceCorrectly()
             {
                 // Arrange
@@ -189,11 +185,11 @@ StackTrace:
 StackTrace:
     toofz.Tests.ExceptionHelper.ThrowException()
     toofz.TestsShared.Record.Exception(Action testCode)";
-                    Assert.That.NormalizedAreEqual(expected, output);
+                    Assert.Equal(expected, output);
                 }
             }
 
-            [TestMethod]
+            [Fact]
             public void StackFrameStartsWith3Dashes_DoesNotLogWarning()
             {
                 // Arrange
@@ -212,7 +208,7 @@ StackTrace:
                 }
             }
 
-            [TestMethod]
+            [Fact]
             public void StackFrameInWrongFormat_LogsWarning()
             {
                 // Arrange

@@ -1,30 +1,27 @@
 ﻿using System.Diagnostics;
-using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace toofz.Tests
 {
     public class StopwatchAdapterTests
     {
-        [TestClass]
         public class StartNew
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsInstanceAndInstanceIsRunning()
             {
                 // Arrange -> Act
                 var adapter = StopwatchAdapter.StartNew();
 
                 // Assert
-                Assert.IsInstanceOfType(adapter, typeof(StopwatchAdapter));
-                Assert.IsTrue(adapter.IsRunning);
+                Assert.IsAssignableFrom<StopwatchAdapter>(adapter);
+                Assert.True(adapter.IsRunning);
             }
         }
 
-        [TestClass]
         public class IsRunning
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsIsRunningFromStopwatch()
             {
                 // Arrange
@@ -32,14 +29,13 @@ namespace toofz.Tests
                 var adapter = new StopwatchAdapter(stopwatch);
 
                 // Act -> Assert
-                Assert.AreEqual(stopwatch.IsRunning, adapter.IsRunning);
+                Assert.Equal(stopwatch.IsRunning, adapter.IsRunning);
             }
         }
 
-        [TestClass]
         public class Elapsed
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsElapsedFromStopwatch()
             {
                 // Arrange
@@ -48,14 +44,13 @@ namespace toofz.Tests
                 adapter.Stop();
 
                 // Act -> Assert
-                Assert.AreEqual(stopwatch.Elapsed, adapter.Elapsed);
+                Assert.Equal(stopwatch.Elapsed, adapter.Elapsed);
             }
         }
 
-        [TestClass]
         public class ElapsedMilliseconds
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsElapsedMillisecondsFromStopwatch()
             {
                 // Arrange
@@ -64,14 +59,13 @@ namespace toofz.Tests
                 adapter.Stop();
 
                 // Act -> Assert
-                Assert.AreEqual(stopwatch.ElapsedMilliseconds, adapter.ElapsedMilliseconds);
+                Assert.Equal(stopwatch.ElapsedMilliseconds, adapter.ElapsedMilliseconds);
             }
         }
 
-        [TestClass]
         public class ElapsedTicks
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsElapsedTicksFromStopwatch()
             {
                 // Arrange
@@ -80,14 +74,13 @@ namespace toofz.Tests
                 adapter.Stop();
 
                 // Act -> Assert
-                Assert.AreEqual(stopwatch.ElapsedTicks, adapter.ElapsedTicks);
+                Assert.Equal(stopwatch.ElapsedTicks, adapter.ElapsedTicks);
             }
         }
 
-        [TestClass]
         public class Reset
         {
-            [TestMethod]
+            [Fact]
             public void StopsMeasuringAndResetsElapsedTimeToZero()
             {
                 // Arrange
@@ -97,15 +90,14 @@ namespace toofz.Tests
                 adapter.Reset();
 
                 // Assert
-                Assert.IsFalse(adapter.IsRunning);
-                Assert.AreEqual(0, adapter.ElapsedTicks);
+                Assert.False(adapter.IsRunning);
+                Assert.Equal(0, adapter.ElapsedTicks);
             }
         }
 
-        [TestClass]
         public class Restart
         {
-            [TestMethod]
+            [Fact]
             public void ResetsElapsedTimeAndStartsMeasuring()
             {
                 // Arrange
@@ -115,14 +107,13 @@ namespace toofz.Tests
                 adapter.Restart();
 
                 // Assert
-                Assert.IsTrue(adapter.IsRunning);
+                Assert.True(adapter.IsRunning);
             }
         }
 
-        [TestClass]
         public class Start
         {
-            [TestMethod]
+            [Fact]
             public void StartsMeasuring()
             {
                 // Arrange
@@ -133,14 +124,13 @@ namespace toofz.Tests
                 adapter.Start();
 
                 // Assert
-                Assert.IsTrue(adapter.IsRunning);
+                Assert.True(adapter.IsRunning);
             }
         }
 
-        [TestClass]
         public class Stop
         {
-            [TestMethod]
+            [Fact]
             public void StopsMeasuring()
             {
                 // Arrange
@@ -150,7 +140,7 @@ namespace toofz.Tests
                 adapter.Stop();
 
                 // Assert
-                Assert.IsFalse(adapter.IsRunning);
+                Assert.False(adapter.IsRunning);
             }
         }
     }

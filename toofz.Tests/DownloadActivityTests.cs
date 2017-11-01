@@ -1,16 +1,15 @@
 ﻿using Humanizer;
 using log4net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace toofz.Tests
 {
     public class DownloadActivityTests
     {
-        [TestClass]
         public class Constructor
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsInstance()
             {
                 // Arrange
@@ -21,14 +20,13 @@ namespace toofz.Tests
                 var activity = new DownloadActivity(log, name);
 
                 // Assert
-                Assert.IsInstanceOfType(activity, typeof(DownloadActivity));
+                Assert.IsAssignableFrom<DownloadActivity>(activity);
             }
         }
 
-        [TestClass]
         public class TotalBytesProperty
         {
-            [TestMethod]
+            [Fact]
             public void ReturnsTotalBytes()
             {
                 // Arrange
@@ -42,14 +40,13 @@ namespace toofz.Tests
                 var totalBytes = activity.TotalBytes;
 
                 // Assert
-                Assert.AreEqual(42, totalBytes);
+                Assert.Equal(42, totalBytes);
             }
         }
 
-        [TestClass]
         public class ReportMethod
         {
-            [TestMethod]
+            [Fact]
             public void AddsValueToTotalBytes()
             {
                 // Arrange
@@ -62,14 +59,13 @@ namespace toofz.Tests
                 activity.Report(1);
 
                 // Assert
-                Assert.AreEqual(2, activity.TotalBytes);
+                Assert.Equal(2, activity.TotalBytes);
             }
         }
 
-        [TestClass]
         public class DisposeMethod
         {
-            [TestMethod]
+            [Fact]
             public void LogsSizeTimeAndRate()
             {
                 // Arrange
@@ -89,7 +85,7 @@ namespace toofz.Tests
                 mockLog.Verify(l => l.Info("Download leaderboards complete -- 26.3 MB over 10.3 seconds (2.5 MBps)."));
             }
 
-            [TestMethod]
+            [Fact]
             public void DisposingMoreThanOnce_LogsSizeTimeAndRateOnlyOnce()
             {
                 // Arrange

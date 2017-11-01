@@ -1,16 +1,15 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace toofz.Tests
 {
     public class TextWriterExtensionsTests
     {
-        [TestClass]
         public class WriteLineStart
         {
-            [TestMethod]
+            [Fact]
             public void WritesLineThenValue()
             {
                 // Arrange
@@ -24,14 +23,14 @@ namespace toofz.Tests
                 mockWriter.Verify(x => x.Write((object)null), Times.Once);
             }
 
-            [TestMethod]
+            [Fact]
             public void WriterIsNull_ThrowsArgumentNullException()
             {
                 // Arrange
                 TextWriter writer = null;
 
                 // Act -> Assert
-                Assert.ThrowsException<ArgumentNullException>(() =>
+                Assert.Throws<ArgumentNullException>(() =>
                 {
                     TextWriterExtensions.WriteLineStart(writer, null);
                 });

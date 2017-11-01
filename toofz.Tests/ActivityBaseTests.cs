@@ -1,16 +1,15 @@
 ﻿using System;
 using log4net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace toofz.Tests
 {
     public class ActivityBaseTests
     {
-        [TestClass]
         public class Constructor
         {
-            [TestMethod]
+            [Fact]
             public void CategoryIsNull_ThrowsArgumentNullException()
             {
                 // Arrange
@@ -20,13 +19,13 @@ namespace toofz.Tests
                 var stopwatch = Mock.Of<IStopwatch>();
 
                 // Act -> Assert
-                Assert.ThrowsException<ArgumentNullException>(() =>
+                Assert.Throws<ArgumentNullException>(() =>
                 {
                     new ActivityBaseAdapter(category, log, name, stopwatch);
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void LogIsNull_ThrowsArgumentNullException()
             {
                 // Arrange
@@ -36,13 +35,13 @@ namespace toofz.Tests
                 var stopwatch = Mock.Of<IStopwatch>();
 
                 // Act -> Assert
-                Assert.ThrowsException<ArgumentNullException>(() =>
+                Assert.Throws<ArgumentNullException>(() =>
                 {
                     new ActivityBaseAdapter(category, log, name, stopwatch);
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void NameIsNull_ThrowsArgumentNullException()
             {
                 // Arrange
@@ -52,13 +51,13 @@ namespace toofz.Tests
                 var stopwatch = Mock.Of<IStopwatch>();
 
                 // Act -> Assert
-                Assert.ThrowsException<ArgumentNullException>(() =>
+                Assert.Throws<ArgumentNullException>(() =>
                 {
                     new ActivityBaseAdapter(category, log, name, stopwatch);
                 });
             }
 
-            [TestMethod]
+            [Fact]
             public void StopwatchIsNull_SetsStopwatchToStopwatchAdapter()
             {
                 // Arrange
@@ -71,10 +70,10 @@ namespace toofz.Tests
                 var activity = new ActivityBaseAdapter(category, log, name, stopwatch);
 
                 // Assert
-                Assert.IsInstanceOfType(activity.Stopwatch, typeof(StopwatchAdapter));
+                Assert.IsAssignableFrom<StopwatchAdapter>(activity.Stopwatch);
             }
 
-            [TestMethod]
+            [Fact]
             public void ReturnsInstance()
             {
                 // Arrange
@@ -87,10 +86,10 @@ namespace toofz.Tests
                 var activity = new ActivityBaseAdapter(category, log, name, stopwatch);
 
                 // Assert
-                Assert.IsInstanceOfType(activity, typeof(ActivityBase));
+                Assert.IsAssignableFrom<ActivityBase>(activity);
             }
 
-            [TestMethod]
+            [Fact]
             public void LogsStartMessage()
             {
                 // Arrange
@@ -108,10 +107,9 @@ namespace toofz.Tests
             }
         }
 
-        [TestClass]
         public class DisposeMethod
         {
-            [TestMethod]
+            [Fact]
             public void LogsEndMessage()
             {
                 // Arrange
@@ -129,7 +127,7 @@ namespace toofz.Tests
                 mockLog.Verify(l => l.Debug("End myCategory myName"));
             }
 
-            [TestMethod]
+            [Fact]
             public void DisposingMoreThanOnce_OnlyLogsEndMessageOnce()
             {
                 // Arrange
