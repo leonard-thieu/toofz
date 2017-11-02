@@ -23,7 +23,7 @@ assembly_info:
   assembly_version: $(appveyor_build_version)
 
 install:
-  - nuget update -self
+  - nuget update -Self
   - git clone https://github.com/leonard-thieu/toofz-build.git Scripts
   
 before_build:
