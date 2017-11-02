@@ -31,8 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net">
@@ -55,45 +53,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\TestSettings.settings" />
-    <Compile Include="Properties\TestSettings.cs">
-      <DependentUpon>TestSettings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\TestSettings.designer.cs">
-      <DependentUpon>TestSettings.cs</DependentUpon>
-    </Compile>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="Resources\BasicConfig.config" />
-    <None Include="Resources\SerializeAsXmlConfig.config" />
-    <None Include="Resources\TimeSpanConfig.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityBaseTests.cs" />
     <Compile Include="DownloadActivityTests.cs" />
-    <Compile Include="EncryptedSecretTests.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="ExceptionRendererTests.cs" />
     <Compile Include="ProgressActivityBaseTests.cs" />
-    <Compile Include="ServiceSettingsProviderTests.cs" />
-    <Compile Include="SettingsUtil.cs" />
     <Compile Include="StopwatchAdapterTests.cs" />
     <Compile Include="StoreActivityTests.cs" />
     <Compile Include="TextWriterExtensionsTests.cs" />
-    <Compile Include="TypeExtensionsTests.cs" />
     <Compile Include="UnthrownException.cs" />
     <Compile Include="UpdateActivityTests.cs" />
-    <Compile Include="XmlSerializable.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
