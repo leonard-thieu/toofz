@@ -58,13 +58,9 @@
   <ItemGroup>
     <Compile Include="ActivityBaseTests.cs" />
     <Compile Include="DownloadActivityTests.cs" />
-    <Compile Include="ExceptionHelper.cs" />
-    <Compile Include="ExceptionRendererTests.cs" />
     <Compile Include="ProgressActivityBaseTests.cs" />
     <Compile Include="StopwatchAdapterTests.cs" />
     <Compile Include="StoreActivityTests.cs" />
-    <Compile Include="TextWriterExtensionsTests.cs" />
-    <Compile Include="UnthrownException.cs" />
     <Compile Include="UpdateActivityTests.cs" />
   </ItemGroup>
   <ItemGroup>

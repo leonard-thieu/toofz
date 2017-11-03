@@ -49,14 +49,12 @@
   <ItemGroup>
     <Compile Include="ActivityBase.cs" />
     <Compile Include="DownloadActivity.cs" />
-    <Compile Include="ExceptionRenderer.cs" />
     <Compile Include="IStopwatch.cs" />
     <Compile Include="StopwatchAdapter.cs">
       <DependentUpon>IStopwatch.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgressActivityBase.cs" />
     <Compile Include="StoreActivity.cs" />
-    <Compile Include="TextWriterExtensions.cs" />
     <Compile Include="UpdateActivity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
